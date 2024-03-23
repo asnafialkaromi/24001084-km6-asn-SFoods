@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SFoods</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_tab_home">Home</string>
+    <string name="title_tab_cart">Keranjang</string>
+    <string name="title_tab_profile">Profile</string>
+</resources>
