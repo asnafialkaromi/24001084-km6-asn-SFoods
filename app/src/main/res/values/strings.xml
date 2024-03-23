@@ -5,4 +5,11 @@
     <string name="title_tab_home">Home</string>
     <string name="title_tab_cart">Keranjang</string>
     <string name="title_tab_profile">Profile</string>
+    <string name="text_profile">Profile</string>
+    <string name="text_hint_username">Username</string>
+    <string name="text_username">asnafialkaromi</string>
+    <string name="text_hint_email">Email</string>
+    <string name="text_email">asnafialkaromi4@gmail.com</string>
+    <string name="text_hint_phone_number">No. Telepon</string>
+    <string name="text_phone_number">085159320776</string>
 </resources>
