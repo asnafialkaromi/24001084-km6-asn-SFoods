@@ -5,4 +5,15 @@
     <string name="title_tab_home">Home</string>
     <string name="title_tab_cart">Keranjang</string>
     <string name="title_tab_profile">Profile</string>
+    <string name="text_name">Hai, Asnafi</string>
+    <string name="text_greetings">Hari ini kamu mau makan apa?</string>
+    <string name="text_search_hint">Cari makanan favoritmu disini</string>
+    <string name="text_banner_title">Diskon Hingga 65%</string>
+    <string name="text_banner_description">Ayo beli makanan sekarang dan nikmati diskon yang tersedia</string>
+    <string name="text_category">Kategori</string>
+    <string name="text_category_name">Nasi</string>
+    <string name="text_menu">Semua Menu</string>
+    <string name="text_menu_title">Nasi Goreng</string>
+    <string name="text_menu_rating">4,7</string>
+    <string name="text_menu_price">Rp12.0000</string>
 </resources>
