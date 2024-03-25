@@ -1,14 +1,17 @@
 package com.nafi.sfoods.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
+@Parcelize
 data class Menu(
     var id: String = UUID.randomUUID().toString(),
-    var img: String,
+    var imgUrl: String,
     var name: String,
     var price: Double,
     var rating: Double,
     var description: String,
     var location: String,
     var mapUrl: String
-)
+): Parcelable
