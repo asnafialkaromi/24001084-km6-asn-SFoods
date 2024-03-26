@@ -17,6 +17,7 @@ import com.nafi.sfoods.data.repository.CategoryRepositoryImpl
 import com.nafi.sfoods.data.repository.MenuRepository
 import com.nafi.sfoods.data.repository.MenuRepositoryImpl
 import com.nafi.sfoods.databinding.FragmentHomeBinding
+import com.nafi.sfoods.presentation.detailmenu.DetailMenuActivity
 import com.nafi.sfoods.presentation.home.adapter.CategoryListAdapter
 import com.nafi.sfoods.presentation.home.adapter.MenuListAdapter
 import com.nafi.sfoods.presentation.home.adapter.OnItemClickedListener
@@ -84,7 +85,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDetail(item: Menu) {
-        /*DetailMenuActivity.startActivity(requireContext(),item)*/
+        DetailMenuActivity.startActivity(requireContext(),item)
     }
 
     private fun setCategoryList(data: List<Category>) {

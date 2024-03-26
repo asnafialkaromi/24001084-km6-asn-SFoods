@@ -23,4 +23,15 @@
     <string name="text_menu_title">Nasi Goreng</string>
     <string name="text_menu_rating">4,7</string>
     <string name="text_menu_price">Rp12.0000</string>
+    <string name="text_detail_menu">Detail Menu</string>
+    <string name="text_detail_name">Nasi Goreng</string>
+    <string name="text_detail_rating">4,9</string>
+    <string name="text_detail_price">Rp.200000</string>
+    <string name="text_detail_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="text_detail_location_header">Location</string>
+    <string name="text_detail_location_address">Lorem ipsum dolor</string>
+    <string name="text_detail_add_to_cart">Tambah ke keranjang -</string>
+    <string name="text_detail_button_plus">+</string>
+    <string name="text_detail_quantity">1</string>
+    <string name="text_detail_button_min">-</string>
 </resources>
