@@ -34,4 +34,14 @@
     <string name="text_detail_button_plus">+</string>
     <string name="text_detail_quantity">1</string>
     <string name="text_detail_button_min">-</string>
+    <string name="text_cart">Keranjang</string>
+    <string name="text_cart_menu_name">Nasi Goreng</string>
+    <string name="text_cart_menu_price">Rp.200000</string>
+    <string name="text_hint_note">Catatan</string>
+    <string name="text_cart_min">-</string>
+    <string name="text_cart_counter">1</string>
+    <string name="text_cart_plus">+</string>
+    <string name="text_button_order">Pesan</string>
+    <string name="text_total_price">Total Harga :</string>
+    <string name="text_total_price_number">Rp.600000</string>
 </resources>
