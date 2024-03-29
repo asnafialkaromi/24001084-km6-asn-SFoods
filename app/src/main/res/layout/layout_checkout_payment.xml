@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_title_payment_method"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Metode Pembayaran"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toBottomOf="@+id/rg_payment_method"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rg_payment_method"
+        app:layout_constraintEnd_toStartOf="@+id/rg_payment_method"/>
+
+    <RadioGroup
+        android:id="@+id/rg_payment_method"
+        android:layout_width="120dp"
+        android:layout_height="26dp"
+        android:background="@drawable/bg_rounded_rectangle"
+        android:checkedButton="@+id/rb_cash"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_cash"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_toogle_background_left"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Cash"
+            android:textColor="@drawable/selector_toogle_text_color"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/rb_wallet"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_toogle_background_right"
+            android:button="@null"
+            android:gravity="center"
+            android:text="E-Wallet"
+            android:textColor="@drawable/selector_toogle_text_color"
+            android:textSize="12sp" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

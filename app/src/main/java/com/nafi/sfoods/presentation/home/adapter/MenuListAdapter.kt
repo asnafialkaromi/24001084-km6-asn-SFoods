@@ -11,7 +11,7 @@ import com.nafi.sfoods.databinding.ItemMenuGridBinding
 import com.nafi.sfoods.databinding.ItemMenuListBinding
 import com.nafi.sfoods.presentation.home.viewholder.MenuGridItemViewHolder
 import com.nafi.sfoods.presentation.home.viewholder.MenuListItemViewHolder
-import com.nafi.sfoods.presentation.home.viewholder.ViewHolderBinder
+import com.nafi.sfoods.core.ViewHolderBinder
 
 class MenuListAdapter(
     private val listener: OnItemClickedListener<Menu>,
@@ -61,7 +61,7 @@ class MenuListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (holder !is ViewHolderBinder<*>) return
-        (holder as ViewHolderBinder<*>).bind(dataDiffer.currentList[position])
+        (holder as ViewHolderBinder<Menu>).bind(dataDiffer.currentList[position])
     }
 }
 
