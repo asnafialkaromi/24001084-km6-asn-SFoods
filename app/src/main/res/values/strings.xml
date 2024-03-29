@@ -44,4 +44,12 @@
     <string name="text_button_order">Pesan</string>
     <string name="text_total_price">Total Harga :</string>
     <string name="text_total_price_number">Rp.600000</string>
+    <string name="text_checkout_header">Checkout</string>
+    <string name="text_checkout_button">Bayar</string>
+    <string name="text_cart_add_to_cart">Tambah ke keranjang - %1$s</string>
+    <string name="text_cart_add_menu_success">Add Menu success</string>
+    <string name="text_cart_add_menu_failed">Add Menu Failed</string>
+    <string name="text_checkout_quantity">Qty : 12</string>
+    <string name="text_cart_empty">Cart is Empty</string>
+    <string name="text_cart_is_empty">Cart is Empty</string>
 </resources>

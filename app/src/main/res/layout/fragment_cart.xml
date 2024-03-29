@@ -6,33 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".presentation.cart.CartFragment">
 
-    <TextView
-        android:id="@+id/tv_cart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="@string/text_cart"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <include
-        layout="@layout/item_cart"
+        android:id="@+id/layout_cart_header"
+        layout="@layout/layout_cart_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="26dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cart" />
+        android:layout_marginVertical="12dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/layout_cart_footer"
+        app:layout_constraintTop_toBottomOf="@+id/layout_cart_header"
+        tools:itemCount="9"
+        tools:listitem="@layout/item_cart" />
 
     <include
+        android:id="@+id/layout_content_state"
+        layout="@layout/layout_content_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/layout_cart_footer"
+        app:layout_constraintTop_toTopOf="@+id/layout_cart_header" />
+
+    <include
+        android:id="@+id/layout_cart_footer"
         layout="@layout/layout_cart_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

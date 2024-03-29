@@ -4,16 +4,24 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
+import com.nafi.sfoods.R
+import com.nafi.sfoods.data.datasource.cart.CartDatabaseDataSource
 import com.nafi.sfoods.data.model.Menu
+import com.nafi.sfoods.data.repository.CartRepository
+import com.nafi.sfoods.data.repository.CartRepositoryImpl
+import com.nafi.sfoods.data.source.local.database.AppDatabase
 import com.nafi.sfoods.databinding.ActivityDetailMenuBinding
+import com.nafi.sfoods.utils.GenericViewModelFactory
+import com.nafi.sfoods.utils.proceedWhen
 import com.nafi.sfoods.utils.toIndonesianFormat
 
 class DetailMenuActivity : AppCompatActivity() {
 
     companion object {
-
 
         const val EXTRAS_DETAIL_DATA = "EXTRAS_DETAIL_DATA"
         fun startActivity(context: Context, menu: Menu) {
@@ -21,23 +29,38 @@ class DetailMenuActivity : AppCompatActivity() {
             intent.putExtra(EXTRAS_DETAIL_DATA, menu)
             context.startActivity(intent)
         }
-
     }
-
 
     private val binding: ActivityDetailMenuBinding by lazy {
         ActivityDetailMenuBinding.inflate(layoutInflater)
     }
 
-    private var qty: Int = 1
-    private var amount: Double = 0.0
-    private var mapUrl: String = ""
+    private val viewModel: DetailMenuViewModel by viewModels {
+        val db = AppDatabase.getInstance(this)
+        val ds: CartDatabaseDataSource = CartDatabaseDataSource(db.cartDao())
+        val rp: CartRepository = CartRepositoryImpl(ds)
+
+        GenericViewModelFactory.create(
+            DetailMenuViewModel(intent?.extras, rp)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         getIntentData()
         onClickAction()
+        observeLiveData()
+    }
+
+    private fun observeLiveData() {
+        viewModel.menuCounterLiveData.observe(this) {
+            binding.layoutBottomDetail.tvCounter.text = it.toString()
+        }
+        viewModel.menuPriceLiveData.observe(this) {
+            binding.layoutBottomDetail.btnAddToCart.text =
+                getString(R.string.text_cart_add_to_cart, it.toIndonesianFormat())
+        }
     }
 
     private fun getIntentData() {
@@ -50,35 +73,16 @@ class DetailMenuActivity : AppCompatActivity() {
             binding.layoutContentDetail.tvRating.text = it.rating.toString()
             binding.layoutContentDetail.tvDescription.text = it.description
             binding.layoutLocation.tvDetailLocation.text = it.location
-            "Tambah ke keranjang - ${it.price.toIndonesianFormat()}".also {
-                binding.layoutBottomDetail.btnAddToCart.text = it
-            }
-            amount = it.price
-            mapUrl = it.mapUrl
         }
     }
 
     private fun onClickAction() {
         binding.layoutBottomDetail.btnPlus.setOnClickListener {
-            qty++
-            val finalPrice: Double = qty * amount
-            binding.layoutBottomDetail.tvCounter.text = qty.toString()
-            binding.layoutBottomDetail.btnAddToCart.text = finalPrice.toIndonesianFormat()
-            "Tambah ke Keranjang - ${finalPrice.toIndonesianFormat()}".also {
-                binding.layoutBottomDetail.btnAddToCart.text = it
-            }
+            viewModel.plusCounter()
         }
 
         binding.layoutBottomDetail.btnMin.setOnClickListener {
-            if (qty > 1) {
-                qty--
-                binding.layoutBottomDetail.tvCounter.text = qty.toString()
-                val finalPrice: Double = qty * amount
-                binding.layoutBottomDetail.tvCounter.text = qty.toString()
-                "Tambah ke Keranjang - ${finalPrice.toIndonesianFormat()}".also {
-                    binding.layoutBottomDetail.btnAddToCart.text = it
-                }
-            }
+            viewModel.minusCounter()
         }
 
         binding.layoutTopDetail.btnBack.setOnClickListener {
@@ -86,13 +90,42 @@ class DetailMenuActivity : AppCompatActivity() {
         }
 
         binding.layoutLocation.tvDetailLocation.setOnClickListener {
-            setPinLocationMap(mapUrl)
+            setPinLocationMap()
+        }
+
+        binding.layoutBottomDetail.btnAddToCart.setOnClickListener {
+            addMenuToCart()
         }
     }
 
-    private fun setPinLocationMap(mapLink: String) {
-        val mapUri = Uri.parse(mapLink)
-        val intent = Intent(Intent.ACTION_VIEW, mapUri)
-        startActivity(intent)
+    private fun addMenuToCart() {
+        viewModel.addToCart().observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_cart_add_menu_success), Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                },
+                doOnError = {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_cart_add_menu_failed), Toast.LENGTH_SHORT
+                    ).show()
+                },
+                doOnLoading = {
+                    binding.layoutBottomDetail.btnAddToCart
+                }
+            )
+        }
+    }
+
+    private fun setPinLocationMap() {
+        viewModel.mapUrlLiveData.observe(this) {
+            val mapUri = Uri.parse(it)
+            val intent = Intent(Intent.ACTION_VIEW, mapUri)
+            startActivity(intent)
+        }
     }
 }

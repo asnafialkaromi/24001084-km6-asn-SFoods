@@ -2,6 +2,7 @@ package com.nafi.sfoods.presentation.home.viewholder
 
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
+import com.nafi.sfoods.core.ViewHolderBinder
 import com.nafi.sfoods.data.model.Menu
 import com.nafi.sfoods.databinding.ItemMenuGridBinding
 import com.nafi.sfoods.presentation.home.adapter.OnItemClickedListener

@@ -10,14 +10,14 @@ data class CartEntity(
     var id: Int? = null,
     @ColumnInfo(name = "product_id")
     var menuId: String? = null,
+    @ColumnInfo(name = "product_img_url")
+    var menuImg: String,
     @ColumnInfo(name = "product_name")
     var menuName: String,
-    @ColumnInfo(name = "product_img_url")
-    var menuImgUrl: String,
     @ColumnInfo(name = "product_price")
-    var menuPrice: String,
+    var menuPrice: Double,
     @ColumnInfo(name = "item_quantity")
-    var menuQuantity: Int = 0,
+    var itemQuantity: Int = 0,
     @ColumnInfo(name = "item_notes")
-    var menuNotes: String? = null
+    var itemNotes: String? = null
 )

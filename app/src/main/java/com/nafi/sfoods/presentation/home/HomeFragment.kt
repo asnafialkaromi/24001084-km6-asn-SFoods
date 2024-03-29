@@ -16,6 +16,8 @@ import com.nafi.sfoods.data.repository.CategoryRepository
 import com.nafi.sfoods.data.repository.CategoryRepositoryImpl
 import com.nafi.sfoods.data.repository.MenuRepository
 import com.nafi.sfoods.data.repository.MenuRepositoryImpl
+import com.nafi.sfoods.data.repository.UserPreferenceRepositoryImpl
+import com.nafi.sfoods.data.source.local.pref.UserPreferenceImpl
 import com.nafi.sfoods.databinding.FragmentHomeBinding
 import com.nafi.sfoods.presentation.detailmenu.DetailMenuActivity
 import com.nafi.sfoods.presentation.home.adapter.CategoryListAdapter
