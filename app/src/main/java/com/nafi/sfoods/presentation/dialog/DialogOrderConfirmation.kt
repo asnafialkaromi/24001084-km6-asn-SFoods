@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.nafi.sfoods.databinding.FragmentDialogOrderConfirmationBinding
-import com.nafi.sfoods.presentation.home.HomeFragment
+import com.nafi.sfoods.presentation.main.MainActivity
+
 
 class DialogOrderConfirmation : DialogFragment() {
 
@@ -29,6 +30,7 @@ class DialogOrderConfirmation : DialogFragment() {
     private fun setOnClick() {
         binding.btnBackToHome.setOnClickListener {
             dismiss()
+            startActivity(Intent(requireContext(),MainActivity::class.java))
         }
     }
 
