@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.nafi.sfoods.core.ViewHolderBinder
 import com.nafi.sfoods.data.model.Menu
 import com.nafi.sfoods.databinding.ItemMenuGridBinding
 import com.nafi.sfoods.databinding.ItemMenuListBinding
 import com.nafi.sfoods.presentation.home.viewholder.MenuGridItemViewHolder
 import com.nafi.sfoods.presentation.home.viewholder.MenuListItemViewHolder
-import com.nafi.sfoods.core.ViewHolderBinder
 
 class MenuListAdapter(
     private val listener: OnItemClickedListener<Menu>,
@@ -26,13 +26,12 @@ class MenuListAdapter(
     private var dataDiffer = AsyncListDiffer(
         this, object : DiffUtil.ItemCallback<Menu>() {
             override fun areItemsTheSame(oldItem: Menu, newItem: Menu): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.name == newItem.name
             }
 
             override fun areContentsTheSame(oldItem: Menu, newItem: Menu): Boolean {
                 return oldItem.hashCode() == newItem.hashCode()
             }
-
         }
     )
 

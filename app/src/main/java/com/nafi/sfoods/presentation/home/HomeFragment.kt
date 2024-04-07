@@ -4,40 +4,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.nafi.sfoods.R
-import com.nafi.sfoods.data.datasource.category.DummyCategoryDataSource
-import com.nafi.sfoods.data.datasource.menu.DummyMenuDataSource
-import com.nafi.sfoods.data.model.Category
+import com.nafi.sfoods.data.datasource.category.CategoryApiDataSource
+import com.nafi.sfoods.data.datasource.category.CategoryDataSource
+import com.nafi.sfoods.data.datasource.menu.MenuApiDataSource
+import com.nafi.sfoods.data.datasource.menu.MenuDataSource
 import com.nafi.sfoods.data.model.Menu
 import com.nafi.sfoods.data.repository.CategoryRepository
 import com.nafi.sfoods.data.repository.CategoryRepositoryImpl
 import com.nafi.sfoods.data.repository.MenuRepository
 import com.nafi.sfoods.data.repository.MenuRepositoryImpl
-import com.nafi.sfoods.data.repository.UserPreferenceRepositoryImpl
-import com.nafi.sfoods.data.source.local.pref.UserPreferenceImpl
+import com.nafi.sfoods.data.source.network.services.SFoodsApiService
 import com.nafi.sfoods.databinding.FragmentHomeBinding
 import com.nafi.sfoods.presentation.detailmenu.DetailMenuActivity
 import com.nafi.sfoods.presentation.home.adapter.CategoryListAdapter
 import com.nafi.sfoods.presentation.home.adapter.MenuListAdapter
 import com.nafi.sfoods.presentation.home.adapter.OnItemClickedListener
 import com.nafi.sfoods.utils.GenericViewModelFactory
+import com.nafi.sfoods.utils.proceedWhen
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
     private val viewModel: HomeViewModel by viewModels {
-        val categoryDataSource = DummyCategoryDataSource()
+        val service = SFoodsApiService.invoke()
+        val categoryDataSource: CategoryDataSource = CategoryApiDataSource(service)
         val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
-        val menuDataSource = DummyMenuDataSource()
+        val menuDataSource: MenuDataSource = MenuApiDataSource(service)
         val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
         GenericViewModelFactory.create(HomeViewModel(categoryRepository, menuRepository))
     }
 
-    private val categoryAdapter = CategoryListAdapter()
+    private val categoryAdapter: CategoryListAdapter by lazy {
+        CategoryListAdapter()
+    }
     private var menuAdapter: MenuListAdapter? = null
     private var isUsingGridMode: Boolean = true
 
@@ -45,16 +50,100 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setCategoryList(viewModel.getCategories())
+        setAdapterCategory()
+        setAdapterMenu()
+        observeCategoryData()
+        observeMenuData()
         bindMenuList(isUsingGridMode)
         setClickActionMenu()
+    }
+
+    private fun setAdapterCategory() {
+        binding.layoutCategory.rvCategory.adapter = this@HomeFragment.categoryAdapter
+    }
+
+    private fun setAdapterMenu() {
+        binding.layoutListMenu.rvMenuGrid.adapter = this@HomeFragment.menuAdapter
+    }
+
+    private fun observeCategoryData() {
+        viewModel.getCategories().observe(viewLifecycleOwner) { result ->
+            result.proceedWhen(
+                doOnLoading = {
+                    binding.layoutCategory.rvCategory.isVisible = false
+                    binding.layoutCategory.progressBar.isVisible = true
+                    binding.layoutCategory.textEmpty.isVisible = false
+                    binding.layoutCategory.textError.isVisible = false
+                },
+                doOnSuccess = {
+                    binding.layoutCategory.rvCategory.isVisible = true
+                    binding.layoutCategory.progressBar.isVisible = false
+                    binding.layoutCategory.textEmpty.isVisible = false
+                    binding.layoutCategory.textError.isVisible = false
+                    result.payload?.let {
+                        categoryAdapter.insertData(it)
+                    }
+                },
+                doOnError = {
+                    binding.layoutCategory.rvCategory.isVisible = false
+                    binding.layoutCategory.progressBar.isVisible = false
+                    binding.layoutCategory.textEmpty.isVisible = false
+                    binding.layoutCategory.textError.isVisible = true
+                },
+                doOnEmpty = {
+                    binding.layoutCategory.rvCategory.isVisible = true
+                    binding.layoutCategory.progressBar.isVisible = false
+                    binding.layoutCategory.textEmpty.isVisible = true
+                    binding.layoutCategory.textError.isVisible = false
+                    result.payload?.let {
+                        categoryAdapter.insertData(it)
+                    }
+                }
+            )
+        }
+    }
+
+    private fun observeMenuData() {
+        viewModel.getMenus().observe(viewLifecycleOwner) { result ->
+            result.proceedWhen(
+                doOnLoading = {
+                    binding.layoutListMenu.rvMenuGrid.isVisible = false
+                    binding.layoutListMenu.progressBar.isVisible = true
+                    binding.layoutListMenu.textEmpty.isVisible = false
+                    binding.layoutListMenu.textError.isVisible = false
+                },
+                doOnSuccess = {
+                    binding.layoutListMenu.rvMenuGrid.isVisible = true
+                    binding.layoutListMenu.progressBar.isVisible = false
+                    binding.layoutListMenu.textEmpty.isVisible = false
+                    binding.layoutListMenu.textError.isVisible = false
+                    result.payload?.let {
+                        menuAdapter?.insertData(it)
+                    }
+                },
+                doOnError = {
+                    binding.layoutListMenu.rvMenuGrid.isVisible = false
+                    binding.layoutListMenu.progressBar.isVisible = false
+                    binding.layoutListMenu.textEmpty.isVisible = false
+                    binding.layoutListMenu.textError.isVisible = true
+                },
+                doOnEmpty = {
+                    binding.layoutListMenu.rvMenuGrid.isVisible = true
+                    binding.layoutListMenu.progressBar.isVisible = false
+                    binding.layoutListMenu.textEmpty.isVisible = true
+                    binding.layoutListMenu.textError.isVisible = false
+                    result.payload?.let {
+                        menuAdapter?.insertData(it)
+                    }
+                }
+            )
+        }
     }
 
     private fun setClickActionMenu() {
@@ -83,17 +172,10 @@ class HomeFragment : Fragment() {
             adapter = this@HomeFragment.menuAdapter
             layoutManager = GridLayoutManager(requireContext(), if (isUsingGridMode) 2 else 1)
         }
-        menuAdapter?.insertData(viewModel.getMenus())
+        observeMenuData()
     }
 
     private fun navigateToDetail(item: Menu) {
-        DetailMenuActivity.startActivity(requireContext(),item)
-    }
-
-    private fun setCategoryList(data: List<Category>) {
-        binding.layoutCategory.rvCategory.apply {
-            adapter = categoryAdapter
-        }
-        categoryAdapter.insertData(data)
+        DetailMenuActivity.startActivity(requireContext(), item)
     }
 }
