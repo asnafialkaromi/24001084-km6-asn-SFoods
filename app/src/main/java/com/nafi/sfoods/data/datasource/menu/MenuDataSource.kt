@@ -1,7 +1,7 @@
 package com.nafi.sfoods.data.datasource.menu
 
-import com.nafi.sfoods.data.model.Menu
+import com.nafi.sfoods.data.source.network.model.Menu.MenuResponse
 
 interface MenuDataSource {
-    fun getMenus(): List<Menu>
+    suspend fun getMenus(categoryParams : String?): MenuResponse
 }

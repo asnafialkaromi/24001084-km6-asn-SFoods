@@ -2,8 +2,9 @@ package com.nafi.sfoods.data.model
 
 import java.util.UUID
 
+
 data class Category(
-    var id: String = UUID.randomUUID().toString(),
-    var name: String,
-    var imgUrl: String
+    //var id: String = UUID.randomUUID().toString(),
+    var imgUrl: String,
+    var name: String
 )

@@ -21,7 +21,6 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.CategoryVie
             }
             binding.tvCategory.text = data.name
         }
-
     }
 
     private val dataDiffer =
@@ -29,13 +28,12 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.CategoryVie
             this,
             object : DiffUtil.ItemCallback<Category>() {
                 override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-                    return oldItem.id == newItem.id
+                    return oldItem.name == newItem.name
                 }
 
                 override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
                     return oldItem.hashCode() == newItem.hashCode()
                 }
-
             }
         )
 
@@ -58,5 +56,4 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.CategoryVie
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.bind(dataDiffer.currentList[position])
     }
-
 }

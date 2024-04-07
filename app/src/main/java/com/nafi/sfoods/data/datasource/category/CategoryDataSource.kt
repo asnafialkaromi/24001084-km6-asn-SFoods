@@ -1,7 +1,7 @@
 package com.nafi.sfoods.data.datasource.category
 
-import com.nafi.sfoods.data.model.Category
+import com.nafi.sfoods.data.source.network.model.Category.CategoryResponse
 
 interface CategoryDataSource {
-    fun getCategories(): List<Category>
+    suspend fun getCategories(): CategoryResponse
 }

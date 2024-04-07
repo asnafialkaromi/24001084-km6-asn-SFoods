@@ -54,4 +54,8 @@
     <string name="text_cart_is_empty">Cart is Empty</string>
     <string name="text_order_success">Pesanan anda berhasil diproses</string>
     <string name="text_order_to_home">Kembali ke Home</string>
+    <string name="text_category_empty">Tidak ada category tersedia</string>
+    <string name="text_category_error">Gagal memuat kategori</string>
+    <string name="text_menu_empty">Tidak ada menu tersedia</string>
+    <string name="text_menu_error">Gagal memuat menu</string>
 </resources>
