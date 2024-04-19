@@ -66,14 +66,14 @@ class RegisterActivity : AppCompatActivity() {
         val password = binding.textPassword.text.toString().trim()
         val confirmPassword = binding.textConfirmPassword.text.toString().trim()
 
-        return checkNameValidation(fullName) && checkEmailValidation(email) &&
+        return checkNameIsValid(fullName) && checkEmailIsValid(email) &&
                 checkPasswordIsValid(password, binding.tilPassword) &&
                 checkPasswordIsValid(confirmPassword, binding.tilConfirmPassword) &&
                 checkSamePassword(password, confirmPassword)
 
     }
 
-    private fun checkNameValidation(fullName: String): Boolean {
+    private fun checkNameIsValid(fullName: String): Boolean {
         return if (fullName.isEmpty()) {
             binding.tilFullname.isErrorEnabled = true
             binding.tilFullname.error = getString(R.string.text_error_name_cannot_empty)
@@ -84,7 +84,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkEmailValidation(email: String): Boolean {
+    private fun checkEmailIsValid(email: String): Boolean {
         return if (email.isEmpty()) {
             binding.tilEmail.isErrorEnabled = true
             binding.tilEmail.error = getString(R.string.text_error_email_empty)

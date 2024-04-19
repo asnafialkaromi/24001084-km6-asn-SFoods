@@ -13,11 +13,17 @@ import com.nafi.sfoods.data.datasource.category.CategoryApiDataSource
 import com.nafi.sfoods.data.datasource.category.CategoryDataSource
 import com.nafi.sfoods.data.datasource.menu.MenuApiDataSource
 import com.nafi.sfoods.data.datasource.menu.MenuDataSource
+import com.nafi.sfoods.data.datasource.user.UserDataSource
+import com.nafi.sfoods.data.datasource.user.UserDataSourceImpl
 import com.nafi.sfoods.data.model.Menu
 import com.nafi.sfoods.data.repository.CategoryRepository
 import com.nafi.sfoods.data.repository.CategoryRepositoryImpl
 import com.nafi.sfoods.data.repository.MenuRepository
 import com.nafi.sfoods.data.repository.MenuRepositoryImpl
+import com.nafi.sfoods.data.repository.UserRepositoryPreference
+import com.nafi.sfoods.data.repository.UserRepositoryPreferenceImpl
+import com.nafi.sfoods.data.source.local.pref.UserPreference
+import com.nafi.sfoods.data.source.local.pref.UserPreferenceImpl
 import com.nafi.sfoods.data.source.network.services.SFoodsApiService
 import com.nafi.sfoods.databinding.FragmentHomeBinding
 import com.nafi.sfoods.presentation.detailmenu.DetailMenuActivity
@@ -33,18 +39,21 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels {
         val service = SFoodsApiService.invoke()
+        val userPreference : UserPreference = UserPreferenceImpl(requireContext())
+        val userDataSource : UserDataSource = UserDataSourceImpl(userPreference)
+        val userRepositoryPreference : UserRepositoryPreference = UserRepositoryPreferenceImpl(userDataSource)
         val categoryDataSource: CategoryDataSource = CategoryApiDataSource(service)
         val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
         val menuDataSource: MenuDataSource = MenuApiDataSource(service)
         val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        GenericViewModelFactory.create(HomeViewModel(categoryRepository, menuRepository))
+        GenericViewModelFactory.create(HomeViewModel(categoryRepository, menuRepository, userRepositoryPreference))
     }
 
     private val categoryAdapter: CategoryListAdapter by lazy {
         CategoryListAdapter()
     }
     private var menuAdapter: MenuListAdapter? = null
-    private var isUsingGridMode: Boolean = true
+    private var isUsingGridMode : Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import coil.load
 import com.nafi.sfoods.R
 import com.nafi.sfoods.data.datasource.cart.CartDatabaseDataSource
@@ -102,6 +103,8 @@ class DetailMenuActivity : AppCompatActivity() {
         viewModel.addToCart().observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutBottomDetail.btnAddToCart.isEnabled = true
+                    binding.layoutBottomDetail.pbLoading.isVisible = false
                     Toast.makeText(
                         this,
                         getString(R.string.text_cart_add_menu_success), Toast.LENGTH_SHORT
@@ -109,13 +112,17 @@ class DetailMenuActivity : AppCompatActivity() {
                     finish()
                 },
                 doOnError = {
+                    binding.layoutBottomDetail.btnAddToCart.isEnabled = false
+                    binding.layoutBottomDetail.pbLoading.isVisible = false
                     Toast.makeText(
                         this,
                         getString(R.string.text_cart_add_menu_failed), Toast.LENGTH_SHORT
                     ).show()
                 },
                 doOnLoading = {
-                    binding.layoutBottomDetail.btnAddToCart
+                    binding.layoutBottomDetail.btnAddToCart.isEnabled = false
+                    binding.layoutBottomDetail.pbLoading.isVisible = true
+                    getString(R.string.text_button_empty).also { binding.layoutBottomDetail.btnAddToCart.text = it }
                 }
             )
         }

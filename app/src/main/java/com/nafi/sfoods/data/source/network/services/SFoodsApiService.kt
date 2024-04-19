@@ -3,10 +3,14 @@ package com.nafi.sfoods.data.source.network.services
 import com.nafi.sfoods.BuildConfig
 import com.nafi.sfoods.data.source.network.model.Category.CategoryResponse
 import com.nafi.sfoods.data.source.network.model.Menu.MenuResponse
+import com.nafi.sfoods.data.source.network.model.order.CheckoutRequestPayload
+import com.nafi.sfoods.data.source.network.model.order.CheckoutResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -16,6 +20,9 @@ interface SFoodsApiService {
 
     @GET("listmenu")
     suspend fun getMenus(@Query("c") category: String? = null): MenuResponse
+
+    @POST("order")
+    suspend fun createOrder(@Body payload: CheckoutRequestPayload): CheckoutResponse
 
     companion object {
         @JvmStatic
