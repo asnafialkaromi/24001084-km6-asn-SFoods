@@ -50,7 +50,9 @@ class HomeFragment : Fragment() {
     }
 
     private val categoryAdapter: CategoryListAdapter by lazy {
-        CategoryListAdapter()
+        CategoryListAdapter(){
+            getMenuData(it.name)
+        }
     }
     private var menuAdapter: MenuListAdapter? = null
     private var isUsingGridMode : Boolean = true
@@ -71,6 +73,7 @@ class HomeFragment : Fragment() {
         observeMenuData()
         bindMenuList(isUsingGridMode)
         setClickActionMenu()
+        getMenuData(null)
     }
 
     private fun setAdapterCategory() {
@@ -186,5 +189,19 @@ class HomeFragment : Fragment() {
 
     private fun navigateToDetail(item: Menu) {
         DetailMenuActivity.startActivity(requireContext(), item)
+    }
+
+    private fun getMenuData(categoryParams: String? = null) {
+        viewModel.getMenus(categoryParams).observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let { data -> bindMenuData(data) }
+                }
+            )
+        }
+    }
+
+    private fun bindMenuData(data: List<Menu>) {
+        menuAdapter?.insertData(data)
     }
 }

@@ -40,7 +40,6 @@ interface UserRepository {
 
 class UserRepositoryImpl(
     private val dataSource: AuthDataSource,
-
 ) : UserRepository {
     override suspend fun doLogin(email: String, password: String): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.doLogin(email, password) }

@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         if (Firebase.auth.currentUser != null) {
             Toast.makeText(
                 this,
-                "User telah login",
+                "Anda telah login",
                 Toast.LENGTH_SHORT
             ).show()
         } else {
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.menu_tab_profile -> {
                     checkUserIsLogin()
+                    /*controller.popBackStack(R.id.menu_tab_home, false)*/
                 }
             }
         }
