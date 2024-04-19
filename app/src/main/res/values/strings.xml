@@ -75,4 +75,9 @@
     <string name="text_button_empty" />
     <string name="text_button_login">Login</string>
     <string name="text_button_register">Register</string>
+    <string name="text_button_update_profile">Update profile</string>
+    <string name="text_log_out">Log Out</string>
+    <string name="text_notif_logout">Anda telah Logout</string>
+    <string name="text_username_is_empty">Username tidak boleh kosong</string>
+    <string name="text_email_is_empty">Email tidak boleh kosong</string>
 </resources>

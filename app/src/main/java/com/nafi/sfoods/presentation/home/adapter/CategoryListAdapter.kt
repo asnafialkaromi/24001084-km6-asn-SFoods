@@ -10,16 +10,23 @@ import com.nafi.sfoods.data.model.Category
 import com.nafi.sfoods.databinding.ItemCategoryBinding
 
 
-class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder>() {
+class CategoryListAdapter(private val itemClick: (Category) -> Unit) :
+    RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder>() {
 
-    class CategoryViewHolder(private val binding: ItemCategoryBinding) :
+    class CategoryViewHolder(
+        private val binding: ItemCategoryBinding,
+        val itemClick: (Category) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Category) {
-            binding.ivCategory.load(data.imgUrl) {
-                crossfade(true)
+            with(data){
+                binding.ivCategory.load(data.imgUrl) {
+                    crossfade(true)
+                }
+                binding.tvCategory.text = data.name
+                itemView.setOnClickListener { itemClick(this) }
             }
-            binding.tvCategory.text = data.name
         }
     }
 
@@ -43,12 +50,12 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.CategoryVie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        return CategoryViewHolder(
+        val binding =
             ItemCategoryBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent, false
             )
-        )
+        return CategoryViewHolder(binding, itemClick)
     }
 
     override fun getItemCount(): Int = dataDiffer.currentList.size
