@@ -29,4 +29,7 @@
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
         <item name="fontFamily">@font/font_poppins</item>
     </style>
+    <style name="progressBarWhite" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">@color/light_gray</item>
+    </style>
 </resources>
