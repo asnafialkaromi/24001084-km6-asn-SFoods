@@ -2,13 +2,16 @@ package com.nafi.sfoods.data.repository
 
 import android.net.Uri
 import com.nafi.sfoods.data.datasource.auth.AuthDataSource
+import com.nafi.sfoods.data.datasource.user.UserDataSource
 import com.nafi.sfoods.data.model.User
 import com.nafi.sfoods.data.model.toUser
+import com.nafi.sfoods.data.source.local.pref.UserPreference
 import com.nafi.sfoods.utils.ResultWrapper
 import com.nafi.sfoods.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
+
     suspend fun doLogin(email: String, password: String): Flow<ResultWrapper<Boolean>>
 
     suspend fun doRegister(
@@ -35,7 +38,10 @@ interface UserRepository {
     fun sendChangePasswordRequestByEmail(): Boolean
 }
 
-class UserRepositoryImpl(private val dataSource: AuthDataSource) : UserRepository {
+class UserRepositoryImpl(
+    private val dataSource: AuthDataSource,
+
+) : UserRepository {
     override suspend fun doLogin(email: String, password: String): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.doLogin(email, password) }
     }
@@ -77,5 +83,24 @@ class UserRepositoryImpl(private val dataSource: AuthDataSource) : UserRepositor
 
     override fun sendChangePasswordRequestByEmail(): Boolean {
         return dataSource.sendChangePasswordRequestByEmail()
+    }
+
+}
+
+interface UserRepositoryPreference {
+
+    fun isUsingGridMode(): Boolean
+
+    fun setUsingGridMode(isUsingGridMode: Boolean)
+
+}
+
+class UserRepositoryPreferenceImpl (private val dataSource: UserDataSource) : UserRepositoryPreference {
+    override fun isUsingGridMode(): Boolean {
+        return dataSource.isUsingGridMode()
+    }
+
+    override fun setUsingGridMode(isUsingGridMode: Boolean) {
+        return dataSource.setUsingGridMode(isUsingGridMode)
     }
 }

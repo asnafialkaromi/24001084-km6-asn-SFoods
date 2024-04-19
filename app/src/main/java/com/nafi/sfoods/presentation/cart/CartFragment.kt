@@ -96,7 +96,8 @@ class CartFragment : Fragment() {
                     binding.layoutCartFooter.root.isVisible = true
                     result.payload?.let { (carts, totalPrice) ->
                         adapter.submitData(carts)
-                        binding.layoutCartFooter.tvTotalPriceNumber.text = totalPrice.toIndonesianFormat()
+                        binding.layoutCartFooter.tvTotalPriceNumber.text =
+                            totalPrice.toIndonesianFormat()
                     }
                 },
                 doOnError = {

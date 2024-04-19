@@ -16,16 +16,3 @@ data class Menu(
     var location: String,
     var mapUrl: String
 ): Parcelable
-
-
-/*
-@SerializedName("image_url")
-val imgUrl: String,
-@SerializedName("nama")
-val name: String,
-@SerializedName("harga")
-val price: Double,
-@SerializedName("detail")
-val details: String,
-@SerializedName("alamat_resto")
-val location: String*/

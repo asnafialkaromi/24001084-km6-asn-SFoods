@@ -2,9 +2,13 @@ package com.nafi.sfoods.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.nafi.sfoods.R
 import com.nafi.sfoods.databinding.ActivityMainBinding
 import com.nafi.sfoods.presentation.login.LoginActivity
@@ -21,6 +25,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupBottomNav()
+
+    }
+
+    private fun checkUserIsLogin() {
+        if (Firebase.auth.currentUser != null) {
+            Toast.makeText(
+                this,
+                "User telah login",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            navigateToLogin()
+        }
     }
 
     private fun setupBottomNav() {
@@ -29,10 +46,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
                 R.id.menu_tab_profile -> {
-                    if (!isLogin) {
-                        navigateToLogin()
-                        controller.navigate(R.id.menu_tab_home)
-                    }
+                    checkUserIsLogin()
                 }
             }
         }

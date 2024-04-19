@@ -80,6 +80,7 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
                         menuPrice = menu.price
                     )
                 )
+                delay(2000)
                 affectedRow > 0
             }
         } ?: flow {
