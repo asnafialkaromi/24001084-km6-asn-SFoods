@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "283907351911",
+    "project_id": "sfoodsproject",
+    "storage_bucket": "sfoodsproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283907351911:android:b8388fd1544e0b461e3bc2",
+        "android_client_info": {
+          "package_name": "com.nafi.sfoods"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKJ4R43upmZbtwj-4EzJYcOW4aJWwFKMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
