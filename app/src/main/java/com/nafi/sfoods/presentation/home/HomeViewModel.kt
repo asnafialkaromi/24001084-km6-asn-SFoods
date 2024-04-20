@@ -1,5 +1,7 @@
 package com.nafi.sfoods.presentation.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.nafi.sfoods.data.repository.CategoryRepository
@@ -21,4 +23,5 @@ class HomeViewModel(
     fun isUsingGridMode() = userRepository.isUsingGridMode()
 
     fun setUsingGridMode(isUsingGridMode : Boolean) = userRepository.setUsingGridMode(isUsingGridMode)
+
 }
