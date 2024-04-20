@@ -55,7 +55,7 @@ class HomeFragment : Fragment() {
         }
     }
     private var menuAdapter: MenuListAdapter? = null
-    private var isUsingGridMode : Boolean = true
+    private var isUsingGridMode : Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,11 +67,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setGridStatus()
         setAdapterCategory()
         setAdapterMenu()
+        isUsingGridMode?.let { setButtonImage(it) }
         observeCategoryData()
         observeMenuData()
-        bindMenuList(isUsingGridMode)
+        isUsingGridMode?.let { bindMenuList(it) }
         setClickActionMenu()
         getMenuData(null)
     }
@@ -82,6 +84,20 @@ class HomeFragment : Fragment() {
 
     private fun setAdapterMenu() {
         binding.layoutListMenu.rvMenuGrid.adapter = this@HomeFragment.menuAdapter
+    }
+
+    private fun applyGridMode(){
+        val currentMode = viewModel.isUsingGridMode()
+        isUsingGridMode = currentMode
+    }
+
+    private fun setGridStatus(){
+        if (isUsingGridMode == true){
+            applyGridMode()
+        } else {
+            viewModel.setUsingGridMode(isUsingGridMode = false)
+            applyGridMode()
+        }
     }
 
     private fun observeCategoryData() {
@@ -160,9 +176,9 @@ class HomeFragment : Fragment() {
 
     private fun setClickActionMenu() {
         binding.layoutListMenu.btnChangeMode.setOnClickListener {
-            isUsingGridMode = !isUsingGridMode
-            setButtonImage(isUsingGridMode)
-            bindMenuList(isUsingGridMode)
+            isUsingGridMode = !isUsingGridMode!!
+            setButtonImage(isUsingGridMode!!)
+            bindMenuList(isUsingGridMode!!)
         }
     }
 
@@ -182,7 +198,7 @@ class HomeFragment : Fragment() {
         )
         binding.layoutListMenu.rvMenuGrid.apply {
             adapter = this@HomeFragment.menuAdapter
-            layoutManager = GridLayoutManager(requireContext(), if (isUsingGridMode) 2 else 1)
+            layoutManager = GridLayoutManager(requireContext(), if (isUsingGridMode == true) 2 else 1)
         }
         observeMenuData()
     }
