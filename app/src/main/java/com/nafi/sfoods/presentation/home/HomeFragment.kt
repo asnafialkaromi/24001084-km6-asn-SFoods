@@ -67,9 +67,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setGridStatus()
         setAdapterCategory()
         setAdapterMenu()
+        applyGridMode()
         isUsingGridMode?.let { setButtonImage(it) }
         observeCategoryData()
         observeMenuData()
@@ -88,15 +88,10 @@ class HomeFragment : Fragment() {
 
     private fun applyGridMode(){
         val currentMode = viewModel.isUsingGridMode()
-        isUsingGridMode = currentMode
-    }
-
-    private fun setGridStatus(){
-        if (isUsingGridMode == true){
-            applyGridMode()
+        if (currentMode){
+            isUsingGridMode = true
         } else {
-            viewModel.setUsingGridMode(isUsingGridMode = false)
-            applyGridMode()
+            isUsingGridMode = false
         }
     }
 
@@ -176,7 +171,13 @@ class HomeFragment : Fragment() {
 
     private fun setClickActionMenu() {
         binding.layoutListMenu.btnChangeMode.setOnClickListener {
-            isUsingGridMode = !isUsingGridMode!!
+            if (isUsingGridMode == true) {
+                viewModel.setUsingGridMode(false)
+                applyGridMode()
+            } else {
+                viewModel.setUsingGridMode(true)
+                applyGridMode()
+            }
             setButtonImage(isUsingGridMode!!)
             bindMenuList(isUsingGridMode!!)
         }
