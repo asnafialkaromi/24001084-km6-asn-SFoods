@@ -143,7 +143,7 @@ class RegisterActivity : AppCompatActivity() {
                     binding.btnRegister.isVisible = true
                     Toast.makeText(
                         this,
-                        "Register Berhasil",
+                        getString(R.string.text_register_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     navigateToLogin()
@@ -153,7 +153,7 @@ class RegisterActivity : AppCompatActivity() {
                     getString(R.string.text_button_register).also { binding.btnRegister.text = it }
                     Toast.makeText(
                         this,
-                        "Register Failed : ${it.exception?.message.orEmpty()}",
+                        getString(R.string.text_register_failed, it.exception?.message.orEmpty()),
                         Toast.LENGTH_SHORT
                     ).show()
                 },

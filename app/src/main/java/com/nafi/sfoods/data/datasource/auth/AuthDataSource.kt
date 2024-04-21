@@ -2,6 +2,7 @@ package com.nafi.sfoods.data.datasource.auth
 
 import android.net.Uri
 import com.google.firebase.Firebase
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -22,7 +23,7 @@ interface AuthDataSource {
 
     suspend fun updatePassword(newPassword: String): Boolean
 
-    suspend fun updateEmail(newEmail: String): Boolean
+    suspend fun updateEmail(newEmail: String, password: String): Boolean
 
     fun sendChangePasswordRequestByEmail(): Boolean
 
@@ -69,9 +70,31 @@ class FirebaseAuthDataSourceImpl(private val firebaseAuth: FirebaseAuth) : AuthD
         return true
     }
 
-    override suspend fun updateEmail(newEmail: String): Boolean {
-        getCurrentUser()?.updateEmail(newEmail)?.await()
-        return true
+    override suspend fun updateEmail(newEmail: String, password: String): Boolean {
+        val currentUser = getCurrentUser() ?: return false // Check if user is authenticated
+        try {
+            val reAuthenticationResult = reAuthenticateCurrentUser(currentUser, password)
+            if (!reAuthenticationResult) {
+                return false
+            } else {
+                currentUser.verifyBeforeUpdateEmail(newEmail).await()
+            }
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    private suspend fun reAuthenticateCurrentUser(currentUser: FirebaseUser, password: String): Boolean {
+        return try {
+            val credential = EmailAuthProvider.getCredential(currentUser.email!!,password)
+            currentUser.reauthenticate(credential).await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
     override fun sendChangePasswordRequestByEmail(): Boolean {

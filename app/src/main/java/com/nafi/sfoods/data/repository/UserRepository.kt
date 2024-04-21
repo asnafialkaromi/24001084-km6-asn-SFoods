@@ -33,7 +33,7 @@ interface UserRepository {
 
     suspend fun updatePassword(newPassword: String): Flow<ResultWrapper<Boolean>>
 
-    suspend fun updateEmail(newEmail: String): Flow<ResultWrapper<Boolean>>
+    suspend fun updateEmail(newEmail: String, password: String): Flow<ResultWrapper<Boolean>>
 
     fun sendChangePasswordRequestByEmail(): Boolean
 }
@@ -76,8 +76,8 @@ class UserRepositoryImpl(
         return proceedFlow { dataSource.updatePassword(newPassword) }
     }
 
-    override suspend fun updateEmail(newEmail: String): Flow<ResultWrapper<Boolean>> {
-        return proceedFlow { dataSource.updateEmail(newEmail) }
+    override suspend fun updateEmail(newEmail: String,password: String): Flow<ResultWrapper<Boolean>> {
+        return proceedFlow { dataSource.updateEmail(newEmail,password) }
     }
 
     override fun sendChangePasswordRequestByEmail(): Boolean {

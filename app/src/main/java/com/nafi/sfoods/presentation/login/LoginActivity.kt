@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                     binding.btnLogin.isEnabled = true
                     Toast.makeText(
                         this,
-                        "Login Berhasil",
+                        getString(R.string.text_login_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     navigateToMain()
@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                     getString(R.string.text_button_login).also { binding.btnLogin.text = it }
                     Toast.makeText(
                         this,
-                        "Login Failed : ${it.exception?.message.orEmpty()}",
+                        getString(R.string.text_login_failed, it.exception?.message.orEmpty()),
                         Toast.LENGTH_SHORT
                     ).show()
                 },
