@@ -7,9 +7,7 @@
     <string name="title_tab_profile">Profile</string>
     <string name="text_profile">Profile</string>
     <string name="text_hint_username">Username</string>
-    <string name="text_username">asnafialkaromi</string>
     <string name="text_hint_email">Email</string>
-    <string name="text_email">asnafialkaromi4@gmail.com</string>
     <string name="text_hint_phone_number">No. Telepon</string>
     <string name="text_phone_number">085159320776</string>
     <string name="text_name">Hai, Asnafi</string>
@@ -80,4 +78,11 @@
     <string name="text_notif_logout">Anda telah Logout</string>
     <string name="text_username_is_empty">Username tidak boleh kosong</string>
     <string name="text_email_is_empty">Email tidak boleh kosong</string>
+    <string name="text_password_is_empty">Password tidak boleh kosong</string>
+    <string name="text_success_update_email">Update email berhasil</string>
+    <string name="text_success_update_name">Update nama berhasil</string>
+    <string name="text_login_success">Login Berhasil</string>
+    <string name="text_login_failed">Login Gagal : %1$s</string>
+    <string name="text_register_success">Register Berhasil</string>
+    <string name="text_register_failed">Register Gagal : %1$s</string>
 </resources>

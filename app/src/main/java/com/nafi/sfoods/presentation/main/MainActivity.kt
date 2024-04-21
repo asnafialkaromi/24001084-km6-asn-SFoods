@@ -29,14 +29,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkUserIsLogin() {
-        if (Firebase.auth.currentUser != null) {
-            Toast.makeText(
-                this,
-                "Anda telah login",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            navigateToLogin()
+        when {
+            Firebase.auth.currentUser == null -> {
+                navigateToLogin()
+            }
         }
     }
 
