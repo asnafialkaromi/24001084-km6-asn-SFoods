@@ -7,32 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.nafi.sfoods.R
-import com.nafi.sfoods.data.datasource.auth.FirebaseAuthDataSourceImpl
-import com.nafi.sfoods.data.repository.UserRepositoryImpl
 import com.nafi.sfoods.databinding.FragmentProfileBinding
 import com.nafi.sfoods.presentation.main.MainActivity
-import com.nafi.sfoods.utils.GenericViewModelFactory
 import com.nafi.sfoods.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
-    private val viewModel: ProfileViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
-    }
-
-    private fun createViewModel(): ProfileViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return ProfileViewModel(repo)
-    }
+    private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,12 +113,12 @@ class ProfileFragment : Fragment() {
         val fullName = binding.textEditUsername.text.toString().trim()
         val email = binding.textEditEmail.text.toString().trim()
         val password = binding.textEditPassword.text.toString().trim()
-        viewModel.updateProfile(fullName, null)
-        viewModel.updateEmail(email, password)
+        profileViewModel.updateProfile(fullName, null)
+        profileViewModel.updateEmail(email, password)
     }
 
     private fun observeResult() {
-        viewModel.updateProfileResult.observe(viewLifecycleOwner) {
+        profileViewModel.updateProfileResult.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     Toast.makeText(
@@ -142,7 +130,7 @@ class ProfileFragment : Fragment() {
             )
         }
 
-        viewModel.updateEmailResult.observe(viewLifecycleOwner) { it ->
+        profileViewModel.updateEmailResult.observe(viewLifecycleOwner) { it ->
             it.proceedWhen(
                 doOnSuccess = {
                     Toast.makeText(

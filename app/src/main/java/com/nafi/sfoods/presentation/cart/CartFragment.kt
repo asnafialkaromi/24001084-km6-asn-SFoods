@@ -7,51 +7,40 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.nafi.sfoods.R
-import com.nafi.sfoods.data.datasource.cart.CartDataSource
-import com.nafi.sfoods.data.datasource.cart.CartDatabaseDataSource
 import com.nafi.sfoods.data.model.Cart
-import com.nafi.sfoods.data.repository.CartRepository
-import com.nafi.sfoods.data.repository.CartRepositoryImpl
-import com.nafi.sfoods.data.source.local.database.AppDatabase
 import com.nafi.sfoods.databinding.FragmentCartBinding
 import com.nafi.sfoods.presentation.checkout.CheckoutActivity
 import com.nafi.sfoods.presentation.common.adapter.CartListAdapter
 import com.nafi.sfoods.presentation.common.adapter.CartListener
-import com.nafi.sfoods.utils.GenericViewModelFactory
 import com.nafi.sfoods.utils.hideKeyboard
 import com.nafi.sfoods.utils.proceedWhen
 import com.nafi.sfoods.utils.toIndonesianFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class CartFragment : Fragment() {
 
     private lateinit var binding: FragmentCartBinding
 
-    private val viewModel: CartViewModel by viewModels {
-        val db = AppDatabase.getInstance(requireContext())
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CartViewModel(rp))
-    }
+    private val cartViewModel: CartViewModel by viewModel()
 
     private val adapter: CartListAdapter by lazy {
         CartListAdapter(object : CartListener {
             override fun onPlusTotalItemCartClicked(cart: Cart) {
-                viewModel.increaseCart(cart)
+                cartViewModel.increaseCart(cart)
             }
 
             override fun onMinusTotalItemCartClicked(cart: Cart) {
-                viewModel.decreaseCart(cart)
+                cartViewModel.decreaseCart(cart)
             }
 
             override fun onRemoveCartClicked(cart: Cart) {
-                viewModel.removeCart(cart)
+                cartViewModel.removeCart(cart)
             }
 
             override fun onUserDoneEditingNotes(cart: Cart) {
-                viewModel.setCartNotes(cart)
+                cartViewModel.setCartNotes(cart)
                 hideKeyboard()
             }
         })
@@ -79,7 +68,7 @@ class CartFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
+        cartViewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutContentState.root.isVisible = true

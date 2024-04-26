@@ -21,6 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
 
@@ -35,5 +36,4 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
     }
-
 }
