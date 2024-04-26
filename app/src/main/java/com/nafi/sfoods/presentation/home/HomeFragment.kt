@@ -62,11 +62,7 @@ class HomeFragment : Fragment() {
 
     private fun applyGridMode() {
         val currentMode = homeViewModel.isUsingGridMode()
-        if (currentMode) {
-            isUsingGridMode = true
-        } else {
-            isUsingGridMode = false
-        }
+        isUsingGridMode = currentMode
     }
 
     private fun observeCategoryData() {

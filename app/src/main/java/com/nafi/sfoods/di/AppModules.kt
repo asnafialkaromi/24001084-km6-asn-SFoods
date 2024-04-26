@@ -19,6 +19,8 @@ import com.nafi.sfoods.data.repository.MenuRepository
 import com.nafi.sfoods.data.repository.MenuRepositoryImpl
 import com.nafi.sfoods.data.repository.UserRepository
 import com.nafi.sfoods.data.repository.UserRepositoryImpl
+import com.nafi.sfoods.data.source.firebase.FirebaseService
+import com.nafi.sfoods.data.source.firebase.FirebaseServiceImpl
 import com.nafi.sfoods.data.source.local.database.AppDatabase
 import com.nafi.sfoods.data.source.local.database.dao.CartDao
 import com.nafi.sfoods.data.source.local.pref.UserPreference
@@ -43,6 +45,7 @@ object AppModules {
 
     private val networkModule = module {
         single<SFoodsApiService> { SFoodsApiService.invoke() }
+        single<FirebaseService> { FirebaseServiceImpl() }
     }
 
     //todo : firebase
