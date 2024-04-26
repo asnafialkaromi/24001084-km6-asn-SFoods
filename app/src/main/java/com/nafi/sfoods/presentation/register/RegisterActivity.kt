@@ -4,18 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.nafi.sfoods.R
-import com.nafi.sfoods.data.datasource.auth.FirebaseAuthDataSourceImpl
-import com.nafi.sfoods.data.repository.UserRepositoryImpl
 import com.nafi.sfoods.databinding.ActivityRegisterBinding
 import com.nafi.sfoods.presentation.login.LoginActivity
-import com.nafi.sfoods.utils.GenericViewModelFactory
 import com.nafi.sfoods.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -23,16 +19,7 @@ class RegisterActivity : AppCompatActivity() {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: RegisterViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
-    }
-
-    private fun createViewModel(): RegisterViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return RegisterViewModel(repo)
-    }
+    private val registerViewModel: RegisterViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
             val fullName = binding.textFullName.text.toString().trim()
             val email = binding.textEmail.text.toString().trim()
             val password = binding.textPassword.text.toString().trim()
-            viewModel.doRegister(fullName, email, password)
+            registerViewModel.doRegister(fullName, email, password)
         }
     }
 
@@ -136,7 +123,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun observeResult() {
-        viewModel.registerResult.observe(this) {
+        registerViewModel.registerResult.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.pbLoading.isVisible = false

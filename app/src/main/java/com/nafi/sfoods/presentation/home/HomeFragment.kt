@@ -6,56 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.nafi.sfoods.R
-import com.nafi.sfoods.data.datasource.category.CategoryApiDataSource
-import com.nafi.sfoods.data.datasource.category.CategoryDataSource
-import com.nafi.sfoods.data.datasource.menu.MenuApiDataSource
-import com.nafi.sfoods.data.datasource.menu.MenuDataSource
-import com.nafi.sfoods.data.datasource.user.UserDataSource
-import com.nafi.sfoods.data.datasource.user.UserDataSourceImpl
 import com.nafi.sfoods.data.model.Menu
-import com.nafi.sfoods.data.repository.CategoryRepository
-import com.nafi.sfoods.data.repository.CategoryRepositoryImpl
-import com.nafi.sfoods.data.repository.MenuRepository
-import com.nafi.sfoods.data.repository.MenuRepositoryImpl
-import com.nafi.sfoods.data.repository.UserRepositoryPreference
-import com.nafi.sfoods.data.repository.UserRepositoryPreferenceImpl
-import com.nafi.sfoods.data.source.local.pref.UserPreference
-import com.nafi.sfoods.data.source.local.pref.UserPreferenceImpl
-import com.nafi.sfoods.data.source.network.services.SFoodsApiService
 import com.nafi.sfoods.databinding.FragmentHomeBinding
 import com.nafi.sfoods.presentation.detailmenu.DetailMenuActivity
 import com.nafi.sfoods.presentation.home.adapter.CategoryListAdapter
 import com.nafi.sfoods.presentation.home.adapter.MenuListAdapter
 import com.nafi.sfoods.presentation.home.adapter.OnItemClickedListener
-import com.nafi.sfoods.utils.GenericViewModelFactory
 import com.nafi.sfoods.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val viewModel: HomeViewModel by viewModels {
-        val service = SFoodsApiService.invoke()
-        val userPreference : UserPreference = UserPreferenceImpl(requireContext())
-        val userDataSource : UserDataSource = UserDataSourceImpl(userPreference)
-        val userRepositoryPreference : UserRepositoryPreference = UserRepositoryPreferenceImpl(userDataSource)
-        val categoryDataSource: CategoryDataSource = CategoryApiDataSource(service)
-        val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
-        val menuDataSource: MenuDataSource = MenuApiDataSource(service)
-        val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        GenericViewModelFactory.create(HomeViewModel(categoryRepository, menuRepository, userRepositoryPreference))
-    }
+    private val homeViewModel: HomeViewModel by viewModel()
 
     private val categoryAdapter: CategoryListAdapter by lazy {
-        CategoryListAdapter(){
+        CategoryListAdapter() {
             getMenuData(it.name)
         }
     }
     private var menuAdapter: MenuListAdapter? = null
-    private var isUsingGridMode : Boolean? = null
+    private var isUsingGridMode: Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,9 +60,9 @@ class HomeFragment : Fragment() {
         binding.layoutListMenu.rvMenuGrid.adapter = this@HomeFragment.menuAdapter
     }
 
-    private fun applyGridMode(){
-        val currentMode = viewModel.isUsingGridMode()
-        if (currentMode){
+    private fun applyGridMode() {
+        val currentMode = homeViewModel.isUsingGridMode()
+        if (currentMode) {
             isUsingGridMode = true
         } else {
             isUsingGridMode = false
@@ -96,7 +70,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeCategoryData() {
-        viewModel.getCategories().observe(viewLifecycleOwner) { result ->
+        homeViewModel.getCategories().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutCategory.rvCategory.isVisible = false
@@ -133,7 +107,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeMenuData() {
-        viewModel.getMenus().observe(viewLifecycleOwner) { result ->
+        homeViewModel.getMenus().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutListMenu.rvMenuGrid.isVisible = false
@@ -172,10 +146,10 @@ class HomeFragment : Fragment() {
     private fun setClickActionMenu() {
         binding.layoutListMenu.btnChangeMode.setOnClickListener {
             if (isUsingGridMode == true) {
-                viewModel.setUsingGridMode(false)
+                homeViewModel.setUsingGridMode(false)
                 applyGridMode()
             } else {
-                viewModel.setUsingGridMode(true)
+                homeViewModel.setUsingGridMode(true)
                 applyGridMode()
             }
             setButtonImage(isUsingGridMode!!)
@@ -199,7 +173,8 @@ class HomeFragment : Fragment() {
         )
         binding.layoutListMenu.rvMenuGrid.apply {
             adapter = this@HomeFragment.menuAdapter
-            layoutManager = GridLayoutManager(requireContext(), if (isUsingGridMode == true) 2 else 1)
+            layoutManager =
+                GridLayoutManager(requireContext(), if (isUsingGridMode == true) 2 else 1)
         }
         observeMenuData()
     }
@@ -209,7 +184,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getMenuData(categoryParams: String? = null) {
-        viewModel.getMenus(categoryParams).observe(viewLifecycleOwner) {
+        homeViewModel.getMenus(categoryParams).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data -> bindMenuData(data) }

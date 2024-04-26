@@ -1,18 +1,16 @@
 package com.nafi.sfoods.presentation.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.nafi.sfoods.data.repository.CategoryRepository
 import com.nafi.sfoods.data.repository.MenuRepository
-import com.nafi.sfoods.data.repository.UserRepositoryPreference
+import com.nafi.sfoods.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 
 class HomeViewModel(
     private val categoryRepository: CategoryRepository,
     private val menuRepository: MenuRepository,
-    private val userRepository: UserRepositoryPreference
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     fun getCategories() = categoryRepository.getCategories().asLiveData(Dispatchers.IO)
@@ -22,6 +20,7 @@ class HomeViewModel(
 
     fun isUsingGridMode() = userRepository.isUsingGridMode()
 
-    fun setUsingGridMode(isUsingGridMode : Boolean) = userRepository.setUsingGridMode(isUsingGridMode)
+    fun setUsingGridMode(isUsingGridMode: Boolean) =
+        userRepository.setUsingGridMode(isUsingGridMode)
 
 }

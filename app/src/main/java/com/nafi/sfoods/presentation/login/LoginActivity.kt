@@ -4,19 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.nafi.sfoods.R
-import com.nafi.sfoods.data.datasource.auth.FirebaseAuthDataSourceImpl
-import com.nafi.sfoods.data.repository.UserRepositoryImpl
 import com.nafi.sfoods.databinding.ActivityLoginBinding
 import com.nafi.sfoods.presentation.main.MainActivity
 import com.nafi.sfoods.presentation.register.RegisterActivity
-import com.nafi.sfoods.utils.GenericViewModelFactory
 import com.nafi.sfoods.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,16 +20,7 @@ class LoginActivity : AppCompatActivity() {
         ActivityLoginBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: LoginViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
-    }
-
-    private fun createViewModel(): LoginViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return LoginViewModel(repo)
-    }
+    private val loginViewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun observeResult() {
-        viewModel.loginResult.observe(this) {
+        loginViewModel.loginResult.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.pbLoading.isVisible = false
@@ -100,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
         if (isFormValid()) {
             val email = binding.textEmail.text.toString().trim()
             val password = binding.textPassword.text.toString().trim()
-            viewModel.doLogin(email, password)
+            loginViewModel.doLogin(email, password)
         }
     }
 
