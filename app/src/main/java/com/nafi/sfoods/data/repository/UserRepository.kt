@@ -32,9 +32,9 @@ interface UserRepository {
 
     suspend fun updatePassword(newPassword: String): Flow<ResultWrapper<Boolean>>
 
-    suspend fun updateEmail(newEmail: String, password: String): Flow<ResultWrapper<Boolean>>
+    suspend fun updateEmail(newEmail: String): Flow<ResultWrapper<Boolean>>
 
-    fun sendChangePasswordRequestByEmail(): Boolean
+    suspend fun sendChangePasswordRequestByEmail(): Boolean
 
     fun isUsingGridMode(): Boolean
 
@@ -81,13 +81,12 @@ class UserRepositoryImpl(
     }
 
     override suspend fun updateEmail(
-        newEmail: String,
-        password: String
+        newEmail: String
     ): Flow<ResultWrapper<Boolean>> {
-        return proceedFlow { authDataSource.updateEmail(newEmail, password) }
+        return proceedFlow { authDataSource.updateEmail(newEmail) }
     }
 
-    override fun sendChangePasswordRequestByEmail(): Boolean {
+    override suspend fun sendChangePasswordRequestByEmail(): Boolean {
         return authDataSource.sendChangePasswordRequestByEmail()
     }
 

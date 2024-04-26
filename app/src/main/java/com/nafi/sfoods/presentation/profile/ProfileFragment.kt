@@ -26,7 +26,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -64,57 +63,31 @@ class ProfileFragment : Fragment() {
 
     private fun setClickActionSave() {
         val editTextUsername = binding.textEditUsername
-        val editTextEmail = binding.textEditEmail
-        val editTextPassword = binding.textEditPassword // Add this line for password EditText
 
         binding.layoutHeaderProfile.ivEdit.setOnClickListener {
             if (editTextUsername.isEnabled) {
                 val fullName = editTextUsername.text.toString()
-                val email = editTextEmail.text.toString()
-                val password = editTextPassword.text.toString() // Get password input
 
-                if (fullName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) { // Check if all fields are filled
-                    if (isPasswordValid(password)) { // Check if the password meets your criteria
-                        doUpdate()
-                        observeResult()
-                        binding.layoutHeaderProfile.ivEdit.setImageResource(R.drawable.ic_edit)
-                        editTextUsername.isEnabled = false
-                        editTextEmail.isEnabled = false
-                        editTextPassword.isEnabled = false
-                    } else {
-                        editTextPassword.error = getString(R.string.text_error_less_password)
-                    }
+                if (fullName.isNotEmpty()) {
+                    doUpdate()
+                    observeResult()
+                    binding.layoutHeaderProfile.ivEdit.setImageResource(R.drawable.ic_edit)
+                    editTextUsername.isEnabled = false
                 } else {
-                    // Display error message if any field is empty
                     if (fullName.isEmpty()) {
                         binding.textEditUsername.error = getString(R.string.text_username_is_empty)
-                    }
-                    if (email.isEmpty()) {
-                        binding.textEditEmail.error = getString(R.string.text_email_is_empty)
-                    }
-                    if (password.isEmpty()) {
-                        binding.textEditPassword.error = getString(R.string.text_password_is_empty)
                     }
                 }
             } else {
                 binding.layoutHeaderProfile.ivEdit.setImageResource(R.drawable.ic_save)
                 editTextUsername.isEnabled = true
-                editTextEmail.isEnabled = true
-                editTextPassword.isEnabled = true
             }
         }
     }
 
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length >= 8
-    }
-
     private fun doUpdate() {
         val fullName = binding.textEditUsername.text.toString().trim()
-        val email = binding.textEditEmail.text.toString().trim()
-        val password = binding.textEditPassword.text.toString().trim()
         profileViewModel.updateProfile(fullName, null)
-        profileViewModel.updateEmail(email, password)
     }
 
     private fun observeResult() {
@@ -126,25 +99,14 @@ class ProfileFragment : Fragment() {
                         getString(R.string.text_success_update_name),
                         Toast.LENGTH_SHORT
                     ).show()
-                }
-            )
-        }
-
-        profileViewModel.updateEmailResult.observe(viewLifecycleOwner) { it ->
-            it.proceedWhen(
-                doOnSuccess = {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.text_success_update_email),
-                        Toast.LENGTH_SHORT
-                    ).show()
                 },
                 doOnError = {
                     Toast.makeText(
                         requireContext(),
-                        "${it.exception?.message}",
+                        "${it.exception}",
                         Toast.LENGTH_SHORT
                     ).show()
+                    binding.tvError.text = it.exception.toString()
                 }
             )
         }

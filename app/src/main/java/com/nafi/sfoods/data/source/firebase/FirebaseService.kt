@@ -22,7 +22,9 @@ interface FirebaseService {
     fun getCurrentUser(): FirebaseUser?
 }
 
-class FirebaseServiceImpl(private val firebaseAuth: FirebaseAuth) : FirebaseService {
+class FirebaseServiceImpl() : FirebaseService {
+
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
     override suspend fun doLogin(email: String, password: String): Boolean {
         val loginResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()

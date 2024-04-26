@@ -22,17 +22,4 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
             }
         }
     }
-
-    private val _updateEmailResult = MutableLiveData<ResultWrapper<Boolean>>()
-    val updateEmailResult: LiveData<ResultWrapper<Boolean>>
-        get() = _updateEmailResult
-
-    fun updateEmail(newEmail: String, password: String) {
-        viewModelScope.launch {
-            repository.updateEmail(newEmail, password).collect {
-                _updateEmailResult.postValue(it)
-            }
-        }
-    }
-
 }
