@@ -5,7 +5,7 @@ import com.nafi.sfoods.data.source.network.model.order.CheckoutRequestPayload
 import com.nafi.sfoods.data.source.network.model.order.CheckoutResponse
 
 interface MenuDataSource {
-    suspend fun getMenus(categoryParams : String?): MenuResponse
+    suspend fun getMenus(categoryParams: String?): MenuResponse
 
-    suspend fun createOrder ( payload: CheckoutRequestPayload) : CheckoutResponse
+    suspend fun createOrder(payload: CheckoutRequestPayload): CheckoutResponse
 }

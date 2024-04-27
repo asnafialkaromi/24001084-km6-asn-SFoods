@@ -16,51 +16,67 @@ import com.nafi.sfoods.utils.toIndonesianFormat
 
 class CartListAdapter(private val cartListener: CartListener? = null) :
     RecyclerView.Adapter<ViewHolder>() {
-
     private val dataDiffer =
-        AsyncListDiffer(this, object : DiffUtil.ItemCallback<Cart>() {
-            override fun areItemsTheSame(
-                oldItem: Cart,
-                newItem: Cart
-            ): Boolean {
-                return oldItem.id == newItem.id && oldItem.menuId == newItem.menuId
-            }
+        AsyncListDiffer(
+            this,
+            object : DiffUtil.ItemCallback<Cart>() {
+                override fun areItemsTheSame(
+                    oldItem: Cart,
+                    newItem: Cart,
+                ): Boolean {
+                    return oldItem.id == newItem.id && oldItem.menuId == newItem.menuId
+                }
 
-            override fun areContentsTheSame(
-                oldItem: Cart,
-                newItem: Cart
-            ): Boolean {
-                return oldItem.hashCode() == newItem.hashCode()
-            }
-        })
+                override fun areContentsTheSame(
+                    oldItem: Cart,
+                    newItem: Cart,
+                ): Boolean {
+                    return oldItem.hashCode() == newItem.hashCode()
+                }
+            },
+        )
 
     fun submitData(data: List<Cart>) {
         dataDiffer.submitList(data)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (cartListener != null) CartViewHolder(
-            ItemCartBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            ), cartListener
-        ) else CheckoutViewHolder(
-            ItemCheckoutBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder {
+        return if (cartListener != null) {
+            CartViewHolder(
+                ItemCartBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false,
+                ),
+                cartListener,
             )
-        )
+        } else {
+            CheckoutViewHolder(
+                ItemCheckoutBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false,
+                ),
+            )
+        }
     }
 
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         (holder as ViewHolderBinder<Cart>).bind(dataDiffer.currentList[position])
     }
-
 }
 
 class CartViewHolder(
     private val binding: ItemCartBinding,
-    private val cartListener: CartListener?
+    private val cartListener: CartListener?,
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Cart> {
     override fun bind(data: Cart) {
         setCartData(data)
@@ -80,9 +96,10 @@ class CartViewHolder(
         binding.textInputNotes.setText(data.itemNotes)
         binding.textInputNotes.doneEditing {
             binding.textInputNotes.clearFocus()
-            val newItem = data.copy().apply {
-                itemNotes = binding.textInputNotes.text.toString()
-            }
+            val newItem =
+                data.copy().apply {
+                    itemNotes = binding.textInputNotes.text.toString()
+                }
             cartListener?.onUserDoneEditingNotes(newItem)
         }
     }
@@ -100,7 +117,7 @@ class CartViewHolder(
 }
 
 class CheckoutViewHolder(
-    private val binding: ItemCheckoutBinding
+    private val binding: ItemCheckoutBinding,
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Cart> {
     override fun bind(data: Cart) {
         setCheckoutData(data)
@@ -119,10 +136,12 @@ class CheckoutViewHolder(
     }
 }
 
-
 interface CartListener {
     fun onPlusTotalItemCartClicked(cart: Cart)
+
     fun onMinusTotalItemCartClicked(cart: Cart)
+
     fun onRemoveCartClicked(cart: Cart)
+
     fun onUserDoneEditingNotes(cart: Cart)
 }

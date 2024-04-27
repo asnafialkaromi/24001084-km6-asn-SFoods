@@ -9,18 +9,15 @@ import coil.load
 import com.nafi.sfoods.data.model.Category
 import com.nafi.sfoods.databinding.ItemCategoryBinding
 
-
 class CategoryListAdapter(private val itemClick: (Category) -> Unit) :
     RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder>() {
-
     class CategoryViewHolder(
         private val binding: ItemCategoryBinding,
-        val itemClick: (Category) -> Unit
+        val itemClick: (Category) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(data: Category) {
-            with(data){
+            with(data) {
                 binding.ivCategory.load(data.imgUrl) {
                     crossfade(true)
                 }
@@ -34,33 +31,45 @@ class CategoryListAdapter(private val itemClick: (Category) -> Unit) :
         AsyncListDiffer(
             this,
             object : DiffUtil.ItemCallback<Category>() {
-                override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+                override fun areItemsTheSame(
+                    oldItem: Category,
+                    newItem: Category,
+                ): Boolean {
                     return oldItem.name == newItem.name
                 }
 
-                override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+                override fun areContentsTheSame(
+                    oldItem: Category,
+                    newItem: Category,
+                ): Boolean {
                     return oldItem.hashCode() == newItem.hashCode()
                 }
-            }
+            },
         )
-
 
     fun insertData(data: List<Category>) {
         dataDiffer.submitList(data)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): CategoryViewHolder {
         val binding =
             ItemCategoryBinding.inflate(
                 LayoutInflater.from(parent.context),
-                parent, false
+                parent,
+                false,
             )
         return CategoryViewHolder(binding, itemClick)
     }
 
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: CategoryViewHolder,
+        position: Int,
+    ) {
         holder.bind(dataDiffer.currentList[position])
     }
 }

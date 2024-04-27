@@ -11,11 +11,10 @@ import com.nafi.sfoods.utils.proceedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 
-
 interface MenuRepository {
     fun getMenus(categoryParams: String? = null): Flow<ResultWrapper<List<Menu>>>
 
-    fun createOrder(menu : List<Cart>) : Flow<ResultWrapper<Boolean>>
+    fun createOrder(menu: List<Cart>): Flow<ResultWrapper<Boolean>>
 }
 
 class MenuRepositoryImpl(private val dataSource: MenuDataSource) : MenuRepository {
@@ -30,15 +29,17 @@ class MenuRepositoryImpl(private val dataSource: MenuDataSource) : MenuRepositor
                 CheckoutRequestPayload(
                     total = null,
                     username = null,
-                    orders = menu.map {
-                        CheckoutItemPayload(
-                            catatan = it.itemNotes,
-                            harga = it.menuPrice,
-                            nama = it.menuName,
-                            qty = it.itemQuantity,
-                        )
-                    }
-                )).status ?: false
+                    orders =
+                        menu.map {
+                            CheckoutItemPayload(
+                                catatan = it.itemNotes,
+                                harga = it.menuPrice,
+                                nama = it.menuName,
+                                qty = it.itemQuantity,
+                            )
+                        },
+                ),
+            ).status ?: false
         }
     }
 }

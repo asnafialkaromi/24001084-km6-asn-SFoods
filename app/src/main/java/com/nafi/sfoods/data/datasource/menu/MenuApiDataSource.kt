@@ -6,7 +6,7 @@ import com.nafi.sfoods.data.source.network.model.order.CheckoutResponse
 import com.nafi.sfoods.data.source.network.services.SFoodsApiService
 
 class MenuApiDataSource(private val service: SFoodsApiService) : MenuDataSource {
-    override suspend fun getMenus(categoryParams : String?): MenuResponse {
+    override suspend fun getMenus(categoryParams: String?): MenuResponse {
         return service.getMenus(categoryParams)
     }
 

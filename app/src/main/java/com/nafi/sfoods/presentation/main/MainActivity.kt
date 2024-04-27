@@ -2,35 +2,32 @@ package com.nafi.sfoods.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.nafi.sfoods.R
 import com.nafi.sfoods.databinding.ActivityMainBinding
 import com.nafi.sfoods.presentation.login.LoginActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
-
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val isLogin = false
+    private val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupBottomNav()
-
     }
 
     private fun checkUserIsLogin() {
+        val isUserLoggedIn = mainViewModel.isLoggedIn()
+
         when {
-            Firebase.auth.currentUser == null -> {
+            !isUserLoggedIn -> {
                 navigateToLogin()
             }
         }
@@ -43,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.menu_tab_profile -> {
                     checkUserIsLogin()
-                    /*controller.popBackStack(R.id.menu_tab_home, false)*/
+                    // controller.popBackStack(R.id.menu_tab_home, false)
                 }
             }
         }

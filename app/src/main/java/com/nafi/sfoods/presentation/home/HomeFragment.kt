@@ -18,13 +18,12 @@ import com.nafi.sfoods.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
-
     private lateinit var binding: FragmentHomeBinding
 
     private val homeViewModel: HomeViewModel by viewModel()
 
     private val categoryAdapter: CategoryListAdapter by lazy {
-        CategoryListAdapter() {
+        CategoryListAdapter {
             getMenuData(it.name)
         }
     }
@@ -32,14 +31,18 @@ class HomeFragment : Fragment() {
     private var isUsingGridMode: Boolean? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setAdapterCategory()
         setAdapterMenu()
@@ -70,34 +73,34 @@ class HomeFragment : Fragment() {
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutCategory.rvCategory.isVisible = false
-                    binding.layoutCategory.progressBar.isVisible = true
-                    binding.layoutCategory.textEmpty.isVisible = false
-                    binding.layoutCategory.textError.isVisible = false
+                    binding.layoutCategory.pbLoadingCategory.isVisible = true
+                    binding.layoutCategory.textEmptyCategory.isVisible = false
+                    binding.layoutCategory.textErrorCategory.isVisible = false
                 },
                 doOnSuccess = {
                     binding.layoutCategory.rvCategory.isVisible = true
-                    binding.layoutCategory.progressBar.isVisible = false
-                    binding.layoutCategory.textEmpty.isVisible = false
-                    binding.layoutCategory.textError.isVisible = false
+                    binding.layoutCategory.pbLoadingCategory.isVisible = false
+                    binding.layoutCategory.textEmptyCategory.isVisible = false
+                    binding.layoutCategory.textErrorCategory.isVisible = false
                     result.payload?.let {
                         categoryAdapter.insertData(it)
                     }
                 },
                 doOnError = {
                     binding.layoutCategory.rvCategory.isVisible = false
-                    binding.layoutCategory.progressBar.isVisible = false
-                    binding.layoutCategory.textEmpty.isVisible = false
-                    binding.layoutCategory.textError.isVisible = true
+                    binding.layoutCategory.pbLoadingCategory.isVisible = false
+                    binding.layoutCategory.textEmptyCategory.isVisible = false
+                    binding.layoutCategory.textErrorCategory.isVisible = true
                 },
                 doOnEmpty = {
                     binding.layoutCategory.rvCategory.isVisible = true
-                    binding.layoutCategory.progressBar.isVisible = false
-                    binding.layoutCategory.textEmpty.isVisible = true
-                    binding.layoutCategory.textError.isVisible = false
+                    binding.layoutCategory.pbLoadingCategory.isVisible = false
+                    binding.layoutCategory.textEmptyCategory.isVisible = true
+                    binding.layoutCategory.textErrorCategory.isVisible = false
                     result.payload?.let {
                         categoryAdapter.insertData(it)
                     }
-                }
+                },
             )
         }
     }
@@ -107,34 +110,34 @@ class HomeFragment : Fragment() {
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutListMenu.rvMenuGrid.isVisible = false
-                    binding.layoutListMenu.progressBar.isVisible = true
-                    binding.layoutListMenu.textEmpty.isVisible = false
-                    binding.layoutListMenu.textError.isVisible = false
+                    binding.layoutListMenu.pbLoadingMenu.isVisible = true
+                    binding.layoutListMenu.textEmptyMenu.isVisible = false
+                    binding.layoutListMenu.textErrorMenu.isVisible = false
                 },
                 doOnSuccess = {
                     binding.layoutListMenu.rvMenuGrid.isVisible = true
-                    binding.layoutListMenu.progressBar.isVisible = false
-                    binding.layoutListMenu.textEmpty.isVisible = false
-                    binding.layoutListMenu.textError.isVisible = false
+                    binding.layoutListMenu.pbLoadingMenu.isVisible = false
+                    binding.layoutListMenu.textEmptyMenu.isVisible = false
+                    binding.layoutListMenu.textErrorMenu.isVisible = false
                     result.payload?.let {
                         menuAdapter?.insertData(it)
                     }
                 },
                 doOnError = {
                     binding.layoutListMenu.rvMenuGrid.isVisible = false
-                    binding.layoutListMenu.progressBar.isVisible = false
-                    binding.layoutListMenu.textEmpty.isVisible = false
-                    binding.layoutListMenu.textError.isVisible = true
+                    binding.layoutListMenu.pbLoadingMenu.isVisible = false
+                    binding.layoutListMenu.textEmptyMenu.isVisible = false
+                    binding.layoutListMenu.textErrorMenu.isVisible = true
                 },
                 doOnEmpty = {
                     binding.layoutListMenu.rvMenuGrid.isVisible = true
-                    binding.layoutListMenu.progressBar.isVisible = false
-                    binding.layoutListMenu.textEmpty.isVisible = true
-                    binding.layoutListMenu.textError.isVisible = false
+                    binding.layoutListMenu.pbLoadingMenu.isVisible = false
+                    binding.layoutListMenu.textEmptyMenu.isVisible = true
+                    binding.layoutListMenu.textErrorMenu.isVisible = false
                     result.payload?.let {
                         menuAdapter?.insertData(it)
                     }
-                }
+                },
             )
         }
     }
@@ -159,14 +162,16 @@ class HomeFragment : Fragment() {
 
     private fun bindMenuList(isUsingGrid: Boolean) {
         val listMode = if (isUsingGrid) MenuListAdapter.MODE_GRID else MenuListAdapter.MODE_LIST
-        menuAdapter = MenuListAdapter(
-            listMode = listMode,
-            listener = object : OnItemClickedListener<Menu> {
-                override fun onItemClicked(item: Menu) {
-                    navigateToDetail(item)
-                }
-            }
-        )
+        menuAdapter =
+            MenuListAdapter(
+                listMode = listMode,
+                listener =
+                    object : OnItemClickedListener<Menu> {
+                        override fun onItemClicked(item: Menu) {
+                            navigateToDetail(item)
+                        }
+                    },
+            )
         binding.layoutListMenu.rvMenuGrid.apply {
             adapter = this@HomeFragment.menuAdapter
             layoutManager =
@@ -184,7 +189,7 @@ class HomeFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data -> bindMenuData(data) }
-                }
+                },
             )
         }
     }

@@ -11,7 +11,7 @@
         style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Metode Pembayaran"
+        android:text="@string/text_title_method_payment"
         android:textSize="18sp"
         android:textStyle="bold"
         android:maxLines="1"
@@ -39,7 +39,7 @@
             android:background="@drawable/selector_toogle_background_left"
             android:button="@null"
             android:gravity="center"
-            android:text="Cash"
+            android:text="@string/text_method_cash"
             android:textColor="@drawable/selector_toogle_text_color"
             android:textSize="12sp" />
 
@@ -51,7 +51,7 @@
             android:background="@drawable/selector_toogle_background_right"
             android:button="@null"
             android:gravity="center"
-            android:text="E-Wallet"
+            android:text="@string/text_method_ewallet"
             android:textColor="@drawable/selector_toogle_text_color"
             android:textSize="12sp" />
     </RadioGroup>

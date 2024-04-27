@@ -10,13 +10,15 @@ import com.nafi.sfoods.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-
-    suspend fun doLogin(email: String, password: String): Flow<ResultWrapper<Boolean>>
+    suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Flow<ResultWrapper<Boolean>>
 
     suspend fun doRegister(
         fullName: String,
         email: String,
-        password: String
+        password: String,
     ): Flow<ResultWrapper<Boolean>>
 
     fun doLogout(): Boolean
@@ -27,7 +29,7 @@ interface UserRepository {
 
     suspend fun updateProfile(
         fullName: String? = null,
-        photoUri: Uri? = null
+        photoUri: Uri? = null,
     ): Flow<ResultWrapper<Boolean>>
 
     suspend fun updatePassword(newPassword: String): Flow<ResultWrapper<Boolean>>
@@ -43,16 +45,19 @@ interface UserRepository {
 
 class UserRepositoryImpl(
     private val authDataSource: AuthDataSource,
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
 ) : UserRepository {
-    override suspend fun doLogin(email: String, password: String): Flow<ResultWrapper<Boolean>> {
+    override suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { authDataSource.doLogin(email, password) }
     }
 
     override suspend fun doRegister(
         fullName: String,
         email: String,
-        password: String
+        password: String,
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { authDataSource.doRegister(fullName, email, password) }
     }
@@ -71,7 +76,7 @@ class UserRepositoryImpl(
 
     override suspend fun updateProfile(
         fullName: String?,
-        photoUri: Uri?
+        photoUri: Uri?,
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { authDataSource.updateProfile(fullName, photoUri) }
     }
@@ -80,9 +85,7 @@ class UserRepositoryImpl(
         return proceedFlow { authDataSource.updatePassword(newPassword) }
     }
 
-    override suspend fun updateEmail(
-        newEmail: String
-    ): Flow<ResultWrapper<Boolean>> {
+    override suspend fun updateEmail(newEmail: String): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { authDataSource.updateEmail(newEmail) }
     }
 
@@ -98,4 +101,3 @@ class UserRepositoryImpl(
         return userDataSource.setUsingGridMode(isUsingGridMode)
     }
 }
-

@@ -13,7 +13,6 @@ import com.nafi.sfoods.utils.toIndonesianFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CheckoutActivity : AppCompatActivity() {
-
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
     }
@@ -51,27 +50,25 @@ class CheckoutActivity : AppCompatActivity() {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutCheckoutFooter.btnOrder.isEnabled = true
-                    binding.layoutCheckoutFooter.pbLoading.isVisible = false
+                    binding.layoutCheckoutFooter.pbLoadingButtonCheckout.isVisible = false
                     checkoutViewModel.deleteAllCarts()
                     setDialog()
                 },
                 doOnError = {
                     binding.layoutCheckoutFooter.btnOrder.isEnabled = false
-                    binding.layoutCheckoutFooter.pbLoading.isVisible = false
-
+                    binding.layoutCheckoutFooter.pbLoadingButtonCheckout.isVisible = false
                 },
                 doOnLoading = {
                     binding.layoutCheckoutFooter.btnOrder.isEnabled = false
-                    binding.layoutCheckoutFooter.pbLoading.isVisible = true
+                    binding.layoutCheckoutFooter.pbLoadingButtonCheckout.isVisible = true
                     getString(R.string.text_button_empty).also {
                         binding.layoutCheckoutFooter.btnOrder.text = it
                     }
-
                 },
                 doOnEmpty = {
                     binding.layoutCheckoutFooter.btnOrder.isEnabled = false
-                    binding.layoutCheckoutFooter.pbLoading.isVisible = false
-                }
+                    binding.layoutCheckoutFooter.pbLoadingButtonCheckout.isVisible = false
+                },
             )
         }
     }
@@ -91,7 +88,7 @@ class CheckoutActivity : AppCompatActivity() {
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true
-                    binding.layoutState.pbLoading.isVisible = true
+                    binding.layoutState.pbLoadingState.isVisible = true
                     binding.layoutState.tvError.isVisible = false
                     binding.layoutContentCheckout.root.isVisible = false
                     binding.layoutCheckoutFooter.root.isVisible = false
@@ -99,7 +96,7 @@ class CheckoutActivity : AppCompatActivity() {
                 },
                 doOnSuccess = {
                     binding.layoutState.root.isVisible = false
-                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.pbLoadingState.isVisible = false
                     binding.layoutState.tvError.isVisible = false
                     binding.layoutContentCheckout.root.isVisible = true
                     binding.layoutCheckoutFooter.root.isVisible = true
@@ -113,7 +110,7 @@ class CheckoutActivity : AppCompatActivity() {
                 },
                 doOnError = {
                     binding.layoutState.root.isVisible = true
-                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.pbLoadingState.isVisible = false
                     binding.layoutState.tvError.isVisible = true
                     binding.layoutState.tvError.text = result.exception?.message.orEmpty()
                     binding.layoutContentCheckout.root.isVisible = false
@@ -122,7 +119,7 @@ class CheckoutActivity : AppCompatActivity() {
                 },
                 doOnEmpty = { data ->
                     binding.layoutState.root.isVisible = false
-                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.pbLoadingState.isVisible = false
                     binding.layoutState.tvError.isVisible = true
                     binding.layoutState.tvError.text = getString(R.string.text_cart_is_empty)
                     binding.layoutContentCheckout.root.isVisible = false
@@ -132,7 +129,7 @@ class CheckoutActivity : AppCompatActivity() {
                         binding.layoutCheckoutFooter.tvTotalPriceNumber.text =
                             totalPrice.toIndonesianFormat()
                     }
-                }
+                },
             )
         }
     }

@@ -17,11 +17,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class DetailMenuActivity : AppCompatActivity() {
-
     companion object {
-
         const val EXTRAS_DETAIL_DATA = "EXTRAS_DETAIL_DATA"
-        fun startActivity(context: Context, menu: Menu) {
+
+        fun startActivity(
+            context: Context,
+            menu: Menu,
+        ) {
             val intent = Intent(context, DetailMenuActivity::class.java)
             intent.putExtra(EXTRAS_DETAIL_DATA, menu)
             context.startActivity(intent)
@@ -32,7 +34,7 @@ class DetailMenuActivity : AppCompatActivity() {
         ActivityDetailMenuBinding.inflate(layoutInflater)
     }
 
-    private val detailMenuViewModel: DetailMenuViewModel by viewModel(){
+    private val detailMenuViewModel: DetailMenuViewModel by viewModel {
         parametersOf(intent?.extras)
     }
 
@@ -97,7 +99,8 @@ class DetailMenuActivity : AppCompatActivity() {
                     binding.layoutBottomDetail.pbLoading.isVisible = false
                     Toast.makeText(
                         this,
-                        getString(R.string.text_cart_add_menu_success), Toast.LENGTH_SHORT
+                        getString(R.string.text_cart_add_menu_success),
+                        Toast.LENGTH_SHORT,
                     ).show()
                     finish()
                 },
@@ -106,7 +109,8 @@ class DetailMenuActivity : AppCompatActivity() {
                     binding.layoutBottomDetail.pbLoading.isVisible = false
                     Toast.makeText(
                         this,
-                        getString(R.string.text_cart_add_menu_failed), Toast.LENGTH_SHORT
+                        getString(R.string.text_cart_add_menu_failed),
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
@@ -115,7 +119,7 @@ class DetailMenuActivity : AppCompatActivity() {
                     getString(R.string.text_button_empty).also {
                         binding.layoutBottomDetail.btnAddToCart.text = it
                     }
-                }
+                },
             )
         }
     }
