@@ -1,15 +1,12 @@
 <resources>
     <string name="app_name">SFoods</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_tab_home">Home</string>
     <string name="title_tab_cart">Keranjang</string>
     <string name="title_tab_profile">Profile</string>
     <string name="text_profile">Profile</string>
     <string name="text_hint_username">Username</string>
     <string name="text_hint_email">Email</string>
-    <string name="text_hint_phone_number">No. Telepon</string>
-    <string name="text_phone_number">085159320776</string>
     <string name="text_name">Hai, Asnafi</string>
     <string name="text_greetings">Hari ini kamu mau makan apa?</string>
     <string name="text_search_hint">Cari makanan favoritmu disini</string>
@@ -63,7 +60,6 @@
     <string name="text_have_an_account">Have an account?</string>
     <string name="text_full_name">Full Name</string>
     <string name="text_hint_confirm_password">Confirm Password</string>
-    <string name="text_error_empty_password">Password tidak boleh kosong</string>
     <string name="text_error_less_password">Password harus lebih dari 8 huruf</string>
     <string name="text_password_not_match">Password tidak sama\n</string>
     <string name="text_error_name_cannot_empty">Nama tidak boleh kosong</string>
@@ -73,16 +69,20 @@
     <string name="text_button_empty" />
     <string name="text_button_login">Login</string>
     <string name="text_button_register">Register</string>
-    <string name="text_button_update_profile">Update profile</string>
     <string name="text_log_out">Log Out</string>
     <string name="text_notif_logout">Anda telah Logout</string>
     <string name="text_username_is_empty">Username tidak boleh kosong</string>
-    <string name="text_email_is_empty">Email tidak boleh kosong</string>
-    <string name="text_password_is_empty">Password tidak boleh kosong</string>
-    <string name="text_success_update_email">Update email berhasil</string>
     <string name="text_success_update_name">Update nama berhasil</string>
     <string name="text_login_success">Login Berhasil</string>
     <string name="text_login_failed">Login Gagal : %1$s</string>
     <string name="text_register_success">Register Berhasil</string>
     <string name="text_register_failed">Register Gagal : %1$s</string>
+    <string name="text_title_method_delivery">Metode Pengiriman</string>
+    <string name="text_method_pickup">Pick Up</string>
+    <string name="text_method_delivery">Delivery</string>
+    <string name="text_title_checkout_menu">Menu Pesanan</string>
+    <string name="text_title_method_payment">Metode Pembayaran</string>
+    <string name="text_method_cash">Cash</string>
+    <string name="text_method_ewallet">E-Wallet</string>
+    <string name="text_title_order_summary">Menu Order Summary</string>
 </resources>

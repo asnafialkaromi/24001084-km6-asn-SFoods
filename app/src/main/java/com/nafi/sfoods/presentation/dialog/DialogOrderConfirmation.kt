@@ -9,20 +9,22 @@ import androidx.fragment.app.DialogFragment
 import com.nafi.sfoods.databinding.FragmentDialogOrderConfirmationBinding
 import com.nafi.sfoods.presentation.main.MainActivity
 
-
 class DialogOrderConfirmation : DialogFragment() {
-
     private lateinit var binding: FragmentDialogOrderConfirmationBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentDialogOrderConfirmationBinding.inflate(layoutInflater)
         return (binding.root)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setOnClick()
     }
@@ -30,8 +32,7 @@ class DialogOrderConfirmation : DialogFragment() {
     private fun setOnClick() {
         binding.btnBackToHome.setOnClickListener {
             dismiss()
-            startActivity(Intent(requireContext(),MainActivity::class.java))
+            startActivity(Intent(requireContext(), MainActivity::class.java))
         }
     }
-
 }

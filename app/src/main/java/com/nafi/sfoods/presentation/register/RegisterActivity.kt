@@ -14,7 +14,6 @@ import com.nafi.sfoods.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
-
     private val binding: ActivityRegisterBinding by lazy {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
@@ -54,10 +53,9 @@ class RegisterActivity : AppCompatActivity() {
         val confirmPassword = binding.textConfirmPassword.text.toString().trim()
 
         return checkNameIsValid(fullName) && checkEmailIsValid(email) &&
-                checkPasswordIsValid(password, binding.tilPassword) &&
-                checkPasswordIsValid(confirmPassword, binding.tilConfirmPassword) &&
-                checkSamePassword(password, confirmPassword)
-
+            checkPasswordIsValid(password, binding.tilPassword) &&
+            checkPasswordIsValid(confirmPassword, binding.tilConfirmPassword) &&
+            checkSamePassword(password, confirmPassword)
     }
 
     private fun checkNameIsValid(fullName: String): Boolean {
@@ -88,7 +86,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun checkPasswordIsValid(
         confirmPassword: String,
-        textInputLayout: TextInputLayout
+        textInputLayout: TextInputLayout,
     ): Boolean {
         return if (confirmPassword.isEmpty()) {
             textInputLayout.isErrorEnabled = true
@@ -106,7 +104,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkSamePassword(password: String, confirmPassword: String): Boolean {
+    private fun checkSamePassword(
+        password: String,
+        confirmPassword: String,
+    ): Boolean {
         return if (password != confirmPassword) {
             binding.tilPassword.isErrorEnabled = true
             binding.tilPassword.error =
@@ -131,7 +132,7 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(
                         this,
                         getString(R.string.text_register_success),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                     navigateToLogin()
                 },
@@ -141,21 +142,23 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(
                         this,
                         getString(R.string.text_register_failed, it.exception?.message.orEmpty()),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
                     binding.pbLoading.isVisible = true
                     binding.btnRegister.isEnabled = false
                     getString(R.string.text_button_empty).also { binding.btnRegister.text = it }
-                }
+                },
             )
         }
     }
 
     private fun navigateToLogin() {
-        startActivity(Intent(this, LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        })
+        startActivity(
+            Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            },
+        )
     }
 }

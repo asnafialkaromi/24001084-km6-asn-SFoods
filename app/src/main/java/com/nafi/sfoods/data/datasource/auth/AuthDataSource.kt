@@ -1,25 +1,27 @@
 package com.nafi.sfoods.data.datasource.auth
 
 import android.net.Uri
-import com.google.firebase.Firebase
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.auth.userProfileChangeRequest
 import com.nafi.sfoods.data.source.firebase.FirebaseService
-import kotlinx.coroutines.tasks.await
 
 interface AuthDataSource {
     @Throws(exceptionClasses = [Exception::class])
-    suspend fun doLogin(email: String, password: String): Boolean
+    suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Boolean
 
     @Throws(exceptionClasses = [Exception::class])
-    suspend fun doRegister(fullName: String, email: String, password: String): Boolean
+    suspend fun doRegister(
+        fullName: String,
+        email: String,
+        password: String,
+    ): Boolean
 
     suspend fun updateProfile(
         fullName: String? = null,
-        photoUri: Uri? = null
+        photoUri: Uri? = null,
     ): Boolean
 
     suspend fun updatePassword(newPassword: String): Boolean
@@ -36,16 +38,26 @@ interface AuthDataSource {
 }
 
 class FirebaseAuthDataSourceImpl(private val firebaseAuth: FirebaseService) : AuthDataSource {
-    override suspend fun doLogin(email: String, password: String): Boolean {
+    override suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Boolean {
         return firebaseAuth.doLogin(email, password)
     }
 
-    override suspend fun doRegister(fullName: String, email: String, password: String): Boolean {
+    override suspend fun doRegister(
+        fullName: String,
+        email: String,
+        password: String,
+    ): Boolean {
         return doRegister(fullName, email, password)
     }
 
-    override suspend fun updateProfile(fullName: String?, photoUri: Uri?): Boolean {
-        return updateProfile(fullName,photoUri)
+    override suspend fun updateProfile(
+        fullName: String?,
+        photoUri: Uri?,
+    ): Boolean {
+        return updateProfile(fullName, photoUri)
     }
 
     override suspend fun updatePassword(newPassword: String): Boolean {

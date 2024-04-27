@@ -18,43 +18,47 @@ import com.nafi.sfoods.utils.proceedWhen
 import com.nafi.sfoods.utils.toIndonesianFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class CartFragment : Fragment() {
-
     private lateinit var binding: FragmentCartBinding
 
     private val cartViewModel: CartViewModel by viewModel()
 
     private val adapter: CartListAdapter by lazy {
-        CartListAdapter(object : CartListener {
-            override fun onPlusTotalItemCartClicked(cart: Cart) {
-                cartViewModel.increaseCart(cart)
-            }
+        CartListAdapter(
+            object : CartListener {
+                override fun onPlusTotalItemCartClicked(cart: Cart) {
+                    cartViewModel.increaseCart(cart)
+                }
 
-            override fun onMinusTotalItemCartClicked(cart: Cart) {
-                cartViewModel.decreaseCart(cart)
-            }
+                override fun onMinusTotalItemCartClicked(cart: Cart) {
+                    cartViewModel.decreaseCart(cart)
+                }
 
-            override fun onRemoveCartClicked(cart: Cart) {
-                cartViewModel.removeCart(cart)
-            }
+                override fun onRemoveCartClicked(cart: Cart) {
+                    cartViewModel.removeCart(cart)
+                }
 
-            override fun onUserDoneEditingNotes(cart: Cart) {
-                cartViewModel.setCartNotes(cart)
-                hideKeyboard()
-            }
-        })
+                override fun onUserDoneEditingNotes(cart: Cart) {
+                    cartViewModel.setCartNotes(cart)
+                    hideKeyboard()
+                }
+            },
+        )
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentCartBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setList()
         observeData()
@@ -72,14 +76,14 @@ class CartFragment : Fragment() {
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutContentState.root.isVisible = true
-                    binding.layoutContentState.pbLoading.isVisible = true
+                    binding.layoutContentState.pbLoadingState.isVisible = true
                     binding.layoutContentState.tvError.isVisible = false
                     binding.rvCart.isVisible = false
                     binding.layoutCartFooter.root.isVisible = false
                 },
                 doOnSuccess = {
                     binding.layoutContentState.root.isVisible = false
-                    binding.layoutContentState.pbLoading.isVisible = false
+                    binding.layoutContentState.pbLoadingState.isVisible = false
                     binding.layoutContentState.tvError.isVisible = false
                     binding.rvCart.isVisible = true
                     binding.layoutCartFooter.root.isVisible = true
@@ -91,14 +95,14 @@ class CartFragment : Fragment() {
                 },
                 doOnError = {
                     binding.layoutContentState.root.isVisible = false
-                    binding.layoutContentState.pbLoading.isVisible = false
+                    binding.layoutContentState.pbLoadingState.isVisible = false
                     binding.layoutContentState.tvError.text = result.exception?.message.orEmpty()
                     binding.rvCart.isVisible = false
                     binding.layoutCartFooter.root.isVisible = false
                 },
                 doOnEmpty = {
                     binding.layoutContentState.root.isVisible = true
-                    binding.layoutContentState.pbLoading.isVisible = false
+                    binding.layoutContentState.pbLoadingState.isVisible = false
                     binding.layoutContentState.tvError.isVisible = true
                     binding.layoutContentState.tvError.text = getString(R.string.text_cart_empty)
                     binding.rvCart.isVisible = false
@@ -109,7 +113,7 @@ class CartFragment : Fragment() {
                             totalPrice.toIndonesianFormat()
                         binding.layoutCartFooter.btnOrder.isEnabled = false
                     }
-                }
+                },
             )
         }
     }

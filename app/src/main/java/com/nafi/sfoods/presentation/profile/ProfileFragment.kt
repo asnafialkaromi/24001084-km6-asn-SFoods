@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.nafi.sfoods.R
 import com.nafi.sfoods.databinding.FragmentProfileBinding
@@ -17,20 +16,23 @@ import com.nafi.sfoods.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
-
     private lateinit var binding: FragmentProfileBinding
 
     private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setClickActionSave()
         setOnClickListener()
@@ -38,11 +40,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getDataUser() {
-        val userData = FirebaseAuth.getInstance().currentUser
-        userData?.let {
-            binding.textEditEmail.setText(userData.email)
-            binding.textEditUsername.setText(userData.displayName)
-        }
+        val fullName = profileViewModel.getCurrentUser()?.fullName
+        val email = profileViewModel.getCurrentUser()?.email
+
+        binding.textEditUsername.setText(fullName)
+        binding.textEditEmail.setText(email)
     }
 
     private fun setOnClickListener() {
@@ -51,7 +53,7 @@ class ProfileFragment : Fragment() {
             Toast.makeText(
                 requireContext(),
                 getString(R.string.text_notif_logout),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
             navigateToMain()
         }
@@ -97,17 +99,17 @@ class ProfileFragment : Fragment() {
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.text_success_update_name),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnError = {
                     Toast.makeText(
                         requireContext(),
                         "${it.exception}",
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                     binding.tvError.text = it.exception.toString()
-                }
+                },
             )
         }
     }

@@ -10,7 +10,7 @@ import com.nafi.sfoods.utils.toIndonesianFormat
 
 class MenuListItemViewHolder(
     private val binding: ItemMenuListBinding,
-    private val listener: OnItemClickedListener<Menu>
+    private val listener: OnItemClickedListener<Menu>,
 ) : ViewHolder(binding.root), ViewHolderBinder<Menu> {
     override fun bind(data: Menu) {
         with(data) {

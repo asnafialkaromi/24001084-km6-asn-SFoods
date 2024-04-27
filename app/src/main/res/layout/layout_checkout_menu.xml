@@ -9,7 +9,7 @@
         android:id="@+id/tv_checkout_menu_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Menu Pesanan"
+        android:text="@string/text_title_checkout_menu"
         android:textSize="18sp"
         android:textStyle="bold"
         android:maxLines="1"

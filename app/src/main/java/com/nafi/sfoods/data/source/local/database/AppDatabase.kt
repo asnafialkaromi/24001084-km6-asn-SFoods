@@ -10,10 +10,9 @@ import com.nafi.sfoods.data.source.local.database.entity.CartEntity
 @Database(
     entities = [CartEntity::class],
     version = 1,
-    exportSchema = true
+    exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun cartDao(): CartDao
 
     companion object {
@@ -24,13 +23,13 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    DB_NAME
-                )   .fallbackToDestructiveMigration()
-                    .build()
+                val instance =
+                    Room.databaseBuilder(
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        DB_NAME,
+                    ).fallbackToDestructiveMigration()
+                        .build()
                 INSTANCE = instance
                 instance
             }

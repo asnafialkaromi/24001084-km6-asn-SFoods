@@ -21,7 +21,7 @@
             android:layout_marginBottom="8dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="Menu Order Summary" />
+            android:text="@string/text_title_order_summary" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_shopping_summary"
