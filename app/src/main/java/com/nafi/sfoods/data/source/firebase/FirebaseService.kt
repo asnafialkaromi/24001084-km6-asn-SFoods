@@ -1,5 +1,6 @@
 package com.nafi.sfoods.data.source.firebase
 
+import android.net.Uri
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -21,7 +22,10 @@ interface FirebaseService {
         password: String,
     ): Boolean
 
-    suspend fun updateProfile(fullName: String? = null): Boolean
+    suspend fun updateProfile(
+        fullName: String? = null,
+        photoUri: Uri? = null,
+    ): Boolean
 
     suspend fun updatePassword(newPassword: String): Boolean
 
@@ -61,7 +65,10 @@ class FirebaseServiceImpl() : FirebaseService {
         return registerResult.user != null
     }
 
-    override suspend fun updateProfile(fullName: String?): Boolean {
+    override suspend fun updateProfile(
+        fullName: String?,
+        photoUri: Uri?,
+    ): Boolean {
         getCurrentUser()?.updateProfile(
             userProfileChangeRequest {
                 fullName?.let { displayName = fullName }

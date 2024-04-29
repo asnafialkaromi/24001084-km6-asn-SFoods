@@ -5,7 +5,7 @@
     <string name="title_tab_cart">Keranjang</string>
     <string name="title_tab_profile">Profile</string>
     <string name="text_profile">Profile</string>
-    <string name="text_hint_username">Username</string>
+    <string name="text_hint_name">Nama</string>
     <string name="text_hint_email">Email</string>
     <string name="text_name">Hai, Asnafi</string>
     <string name="text_greetings">Hari ini kamu mau makan apa?</string>
