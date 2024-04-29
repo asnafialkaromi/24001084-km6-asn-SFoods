@@ -50,14 +50,14 @@ class FirebaseAuthDataSourceImpl(private val firebaseAuth: FirebaseService) : Au
         email: String,
         password: String,
     ): Boolean {
-        return doRegister(fullName, email, password)
+        return firebaseAuth.doRegister(fullName, email, password)
     }
 
     override suspend fun updateProfile(
         fullName: String?,
         photoUri: Uri?,
     ): Boolean {
-        return updateProfile(fullName, photoUri)
+        return firebaseAuth.updateProfile(fullName, photoUri)
     }
 
     override suspend fun updatePassword(newPassword: String): Boolean {

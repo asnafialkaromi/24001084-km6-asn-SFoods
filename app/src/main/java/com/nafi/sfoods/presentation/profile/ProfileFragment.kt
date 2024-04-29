@@ -108,7 +108,6 @@ class ProfileFragment : Fragment() {
                         "${it.exception}",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    binding.tvError.text = it.exception.toString()
                 },
             )
         }
