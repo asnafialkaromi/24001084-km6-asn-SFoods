@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        getCurrentUserName()
         setAdapterCategory()
         setAdapterMenu()
         applyGridMode()
@@ -53,6 +54,11 @@ class HomeFragment : Fragment() {
         isUsingGridMode?.let { bindMenuList(it) }
         setClickActionMenu()
         getMenuData(null)
+    }
+
+    private fun getCurrentUserName() {
+        val userName = homeViewModel.getCurrentUser()?.fullName
+        binding.layoutHeader.textName.text = userName
     }
 
     private fun setAdapterCategory() {
