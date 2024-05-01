@@ -86,4 +86,5 @@
     <string name="text_method_ewallet">E-Wallet</string>
     <string name="text_title_order_summary">Menu Order Summary</string>
     <string name="text_hello">Halo,</string>
+    <string name="text_header_user">User123</string>
 </resources>
