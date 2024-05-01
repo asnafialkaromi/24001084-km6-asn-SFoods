@@ -58,7 +58,12 @@ class HomeFragment : Fragment() {
 
     private fun getCurrentUserName() {
         val userName = homeViewModel.getCurrentUser()?.fullName
-        binding.layoutHeader.textName.text = userName
+
+        if (userName == null) {
+            binding.layoutHeader.textName.text = getString(R.string.text_header_user)
+        } else {
+            binding.layoutHeader.textName.text = userName
+        }
     }
 
     private fun setAdapterCategory() {
