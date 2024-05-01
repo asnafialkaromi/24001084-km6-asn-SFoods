@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.nafi.sfoods.R
 import com.nafi.sfoods.databinding.FragmentProfileBinding
 import com.nafi.sfoods.presentation.main.MainActivity
@@ -49,7 +47,7 @@ class ProfileFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.tvLogout.setOnClickListener {
-            Firebase.auth.signOut()
+            profileViewModel.doLogout()
             Toast.makeText(
                 requireContext(),
                 getString(R.string.text_notif_logout),
