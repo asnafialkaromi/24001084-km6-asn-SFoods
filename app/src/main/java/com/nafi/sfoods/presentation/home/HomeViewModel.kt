@@ -19,4 +19,6 @@ class HomeViewModel(
     fun isUsingGridMode() = userRepository.isUsingGridMode()
 
     fun setUsingGridMode(isUsingGridMode: Boolean) = userRepository.setUsingGridMode(isUsingGridMode)
+
+    fun getCurrentUser() = userRepository.getCurrentUser()
 }
