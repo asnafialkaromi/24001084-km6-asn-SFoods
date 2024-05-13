@@ -1,6 +1,7 @@
 package com.nafi.sfoods.di
 
 import android.content.SharedPreferences
+import com.google.firebase.auth.FirebaseAuth
 import com.nafi.sfoods.data.datasource.auth.AuthDataSource
 import com.nafi.sfoods.data.datasource.auth.FirebaseAuthDataSourceImpl
 import com.nafi.sfoods.data.datasource.cart.CartDataSource
@@ -45,10 +46,14 @@ object AppModules {
     private val networkModule =
         module {
             single<SFoodsApiService> { SFoodsApiService.invoke() }
-            single<FirebaseService> { FirebaseServiceImpl() }
         }
 
-    // todo : firebase
+    private val firebaseModule =
+        module {
+            single<FirebaseAuth> { FirebaseAuth.getInstance() }
+            single<FirebaseService> { FirebaseServiceImpl(get()) }
+        }
+
     private val localModule =
         module {
             single<AppDatabase> { AppDatabase.getInstance(androidContext()) }
@@ -98,5 +103,5 @@ object AppModules {
         }
 
     val modules =
-        listOf<Module>(networkModule, localModule, datasource, repository, viewModelModule)
+        listOf<Module>(networkModule, firebaseModule, localModule, datasource, repository, viewModelModule)
 }
