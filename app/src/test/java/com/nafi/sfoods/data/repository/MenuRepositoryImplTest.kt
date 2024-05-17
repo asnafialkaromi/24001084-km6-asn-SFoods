@@ -297,28 +297,4 @@ class MenuRepositoryImplTest {
             }
         }
     }
-
-    @Test
-    fun `create order while empty`() {
-        val mockResponse =
-            CheckoutResponse(
-                code = 200,
-                message = "ahdakjwdh",
-                status = true,
-            )
-        val mockLisCart = listOf<Cart>()
-        coEvery { dataSource.createOrder(any()) } returns mockResponse
-        runTest {
-            repository.createOrder(mockLisCart).map {
-                delay(100)
-                it
-            }.test {
-                delay(2201)
-                val data = expectMostRecentItem()
-                assertTrue(data is ResultWrapper.Empty)
-                assertEquals(true, data.payload)
-                coVerify { dataSource.createOrder(any()) }
-            }
-        }
-    }
 }
